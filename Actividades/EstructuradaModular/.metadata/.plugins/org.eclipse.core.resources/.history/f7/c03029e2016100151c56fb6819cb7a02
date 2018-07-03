@@ -1,0 +1,15 @@
+
+public class Ejercicio06Forma2 {
+
+	public static void main(String[] args) {
+		
+		int iPalo = (int)(Math.random()*4);
+		int iCarta = (int)(Math.random()*13);
+		int carta=iCarta;
+		int palo=iPalo;
+		
+		System.out.println("La carta aleatoria es " + iCarta + " de " + iPalo);
+	}
+
+}
+ 

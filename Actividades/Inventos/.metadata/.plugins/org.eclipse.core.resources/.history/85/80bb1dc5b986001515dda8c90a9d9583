@@ -1,0 +1,5 @@
+package BoletinFunciones;
+
+public enum tipo {
+	MAYOR_IGUAL_MIN,MAYOR_IGUAL_MAX,MAYOR_MINIMO,MENOR_MAX
+}

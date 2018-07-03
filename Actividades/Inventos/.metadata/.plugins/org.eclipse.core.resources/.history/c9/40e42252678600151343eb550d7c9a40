@@ -1,0 +1,50 @@
+package BoletinFunciones;
+
+
+import Teclado.Teclado;
+
+
+public class Ejercicio01 {
+	/**
+	 * Escribe una función que tome 3 parámetros: dos de tipo entero y uno de
+	 * tipo carácter. La función deberá sumar, restar, multiplicar o dividir los
+	 * valores de los dos primeros parámetros dependiendo de la operación
+	 * indicada en el tercer parámetro, y devolver el resultado.
+	 */
+	public static void main(String[] args) {
+
+		/** VARIABLES Y OBJETOS */
+		int num1, num2, result;
+		boolean error=false;
+		char opcion;
+
+		/** PEDIMOS DATOS */
+		num1 = Teclado.numeroInt("Introduce un número entero: ");
+		num2 = Teclado.numeroInt("Introduce un número entero: ");
+		
+	}
+
+	public static int calculadora (int num1, int num2, char opcion) {
+
+		int resultado=0;
+		
+		switch (opcion) {
+
+		case '+':// SUMA
+			resultado = num1 + num2;
+			break;
+		case '-':// RESTA
+			resultado = num1 - num2;
+			break;
+		case '*':// MULTIPLICACION
+			resultado = num1 * num2;
+			break;
+		case '/':// DIVISION
+			resultado = num1 / num2;
+			break;
+		}
+		
+		return resultado;
+
+	}
+}

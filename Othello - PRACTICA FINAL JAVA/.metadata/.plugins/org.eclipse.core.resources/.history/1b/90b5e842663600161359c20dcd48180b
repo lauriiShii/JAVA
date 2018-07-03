@@ -1,0 +1,148 @@
+package Othello;
+
+import java.util.ArrayList;
+
+public class Control {
+	/**
+	 * @param dato
+	 * @return coordenadas
+	 * Combierte un caracter en un numero, se tiene en cuenta si es mayuscula o minuscula
+	 */
+	public int numColumna(char dato) {
+		int columna = 0;
+
+		if (dato >= 'a' && dato <= 'a'+Constantes.TAMANIO_TABLERO-1)
+			columna =  dato - 97;
+		if(dato >= 'A' && dato <= 'A'+Constantes.TAMANIO_TABLERO-1)
+			columna =  dato - 65;
+
+		return columna;
+	}
+
+	/**
+	 * Valida el dato introducido como ficha o movimiento a especificar.
+	 * 
+	 * @param dato
+	 * @return validez del dato
+	 */
+	public boolean validarDato(char dato) {
+
+		boolean exito = false;
+
+		if ((dato >= 'a' && dato <= 'a'+Constantes.TAMANIO_TABLERO-1) || (dato >= 'A' && dato <= 'A'+Constantes.TAMANIO_TABLERO-1))
+			exito = true;
+
+		return exito;
+	}
+	
+	/**
+	 * Metodo que cuenta las fichas blancas y negras, a partir de ahi establece quien gana o si quedan empate.
+	 */
+	public void ganador(Tablero tablero) {
+		
+		//SI EL RECUENTO DE BLANCAS Y NEGRAS ES IGUAL SE DA EMPATE
+		if (tablero.contadorFicha(Ficha.BLANCA) == tablero.contadorFicha(Ficha.NEGRA))
+			System.out.println(
+					Constantes.MORADO+"\t!!Ohhhh ... Nos encontramos ante un empate¡¡\n\tFIN DE LA PARTIDA\n\t   (Os espero para una revancha :D)"+Constantes.RESET);
+			
+		//SI EL RECUENTO DE NEGRAS ES MENOR QUE EL DE BLANCAS, GANAN LAS BLANCAS
+		else if (tablero.contadorFicha(Ficha.BLANCA) > tablero.contadorFicha(Ficha.NEGRA))
+			System.out.println(
+					Constantes.MORADO+"\t¡¡Ganan las fichas blancas!!\n\tFIN DE LA PARTIDA\n\t   (En hora buena jugador de fichas blancas.)"+Constantes.RESET);
+		
+		//SI EL RECUENTO DE BLANCAS ES MENOR QUE EL DE NEGRAS, GANAN LAS BLANCAS
+		else if (tablero.contadorFicha(Ficha.BLANCA) < tablero.contadorFicha(Ficha.NEGRA))
+			System.out.println(
+					Constantes.MORADO+"\t¡¡Ganan las fichas negras!!\n\tFIN DE LA PARTIDA\n\t   (En hora buena jugador de fichas negras.)"+Constantes.RESET);
+
+	}
+	
+	/**
+	 * @param color
+	 * @return volteables
+	 * Metodo que almacena en un ArrayList las posiciones en las que el jugador de un color concreto
+	 * puede poner una ficha de color.
+	 * 
+	 * Para ello recorremos el tablero mirando las posiciones una a una. Por cada posicion que testeamos,
+	 * comprobamos sus 8 direcciones posibles. 
+	 * 
+	 * Cuando encontramos una ficha de color opuesto al nuestro, establecemos un patron y buscamos 
+	 * en la linea formada, si topamos con una casilla vacia paramos 
+	 * y buscamos en la siguiente direccion posible si hay, y sino aniadimos la posicion que hemos estudiado
+	 * al array volteables.
+	 */
+	public ArrayList <Casilla> comprobarVolteable(Ficha color) {
+
+		Casilla ficha = new Casilla();
+		Posicion fichasAlrededor = new Posicion();
+		Posicion patron = new Posicion();
+		boolean seguir = true;
+		int cont = 0, i, j, k, l;
+		ArrayList<Casilla> volteables = new ArrayList<Casilla>();
+
+		// RECORREMOS EL TABLERO
+		for (i = 0; i < tablero.length; i++)
+			for (j = 0; j < tablero.length; j++) {
+				
+				// GUARDAMOS LA POSICION QUE ESTAMOS TESTEANDO
+				ficha.posicion.fila = i;
+				ficha.posicion.columna = j;
+				
+				// SI LA POSICION GUARDADA ESTA VACIA
+				if (tablero[i][j].colorFicha == Ficha.NADA)
+					
+					// RECORREMOS LAS FICHAS QUE LE RODEAN, UNA FILA MENOS, UNA FILA MAS, UNA COLUMNA MENOS, UNA COLUMNA MAS
+					for (k = ficha.posicion.fila - 1; k <= ficha.posicion.fila + 1; k++) {
+						for (l = ficha.posicion.columna - 1; l <= ficha.posicion.columna + 1; l++) {
+							cont = 0;
+							
+							// SI ESTAMOS DENTRO DE LOS LIMITES DEL TABLERO Y LA FICHA NO SE ENCUENTA EN LA POSICION QUE ESTAMOS COMPROBANDO
+							if (k >= 0 && k < Constantes.TAMANIO_TABLERO && l >= 0 && l < Constantes.TAMANIO_TABLERO
+									&& !(ficha.posicion.fila == k && ficha.posicion.columna == l)) {
+								
+								// SI EL COLOR DE LA FICHA ENCONTRADA ES DIFERENTE AL DE LA NUESTRA
+								if ((tablero[k][l].colorFicha != color)
+										&& (tablero[k][l].colorFicha != Ficha.NADA)) {
+									
+									// GUARDAMOS LA POSICION DE ESTA
+									fichasAlrededor.fila = k;
+									fichasAlrededor.columna = l;
+
+									// CREAMOS UN PATRON SI NO ESTA CREADO
+									if (cont == 0) {
+										patron.fila = k - ficha.posicion.fila;
+										patron.columna = l - ficha.posicion.columna;
+									}
+									cont = 1;
+									
+									// RECORREMOS LA LINEA FORMADA CON EL PATRON
+									while ((fichasAlrededor.fila < Constantes.TAMANIO_TABLERO && fichasAlrededor.fila >= 0)
+											&& (fichasAlrededor.columna < Constantes.TAMANIO_TABLERO && fichasAlrededor.columna >= 0) && seguir) {
+										fichasAlrededor.fila += patron.fila;
+										fichasAlrededor.columna += patron.columna;
+
+										// SI ENCONTRAMOS UNA CASILLA VACIA NO SEQUIMOS BUSCANDO EN ESTA DIRECCION
+										if ((fichasAlrededor.fila < Constantes.TAMANIO_TABLERO && fichasAlrededor.fila >= 0)
+												&& (fichasAlrededor.columna < Constantes.TAMANIO_TABLERO && fichasAlrededor.columna >= 0)
+												&& tablero[fichasAlrededor.fila][fichasAlrededor.columna].colorFicha == Ficha.NADA)
+											seguir = false;
+
+										// SI ENCONTRAMOS UNA FICHA DE NUESTRO COLOR, AÑADIMOS LA POSICION QUE EMPEZAMOS A TESTEAR (i,j)
+										// A NUESTRO ARRAY LIST
+										if ((fichasAlrededor.fila < Constantes.TAMANIO_TABLERO && fichasAlrededor.fila >= 0)
+												&& (fichasAlrededor.columna < Constantes.TAMANIO_TABLERO && fichasAlrededor.columna >= 0)
+												&& tablero[fichasAlrededor.fila][fichasAlrededor.columna].colorFicha == color) {
+											volteables.add(tablero[i][j]);
+											seguir = false;
+										}
+									}
+									seguir = true;
+
+								}
+							}
+						}
+					}
+			}
+		return volteables;
+	}
+}

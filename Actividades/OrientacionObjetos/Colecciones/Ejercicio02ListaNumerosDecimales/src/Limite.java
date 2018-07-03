@@ -1,0 +1,3 @@
+public enum Limite {
+	MAYOIGMIN, MENOIGMAX, MAYORMIN, MENORMAX;
+}

@@ -1,0 +1,8 @@
+/**
+ * Enum que contiene los dos roles de un participante.
+ * @author joaquin
+ *
+ */
+public enum Propietario{
+	JUGADOR, OPONENTE;
+}

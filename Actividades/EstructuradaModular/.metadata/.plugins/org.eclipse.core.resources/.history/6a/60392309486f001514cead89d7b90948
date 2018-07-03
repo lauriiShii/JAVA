@@ -1,0 +1,31 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+public class Sonidos {
+
+ public static void main(String[] args) throws IOException { //Throws obligatorio o usar otro try catch.
+  
+  int i;
+  String sonido = "D:/Descargas/Barney_el_camion_-_Los_Numeros_del_1_al_10_-_Canci.wav"; //Dirección cambiando las barras  \ por barras /.
+  
+  for (i = 0; i < 100; i--) { //Cada vez que se quiera usar hay que ponerlo todo.
+   InputStream Sonido = new FileInputStream(sonido);
+   AudioStream Player = new AudioStream(Sonido);
+   AudioPlayer.player.start(Player);
+   System.out.println("Barney!!");
+   
+   //Try catch obligatorio.
+   try {
+    Thread.sleep(1000); //Delay en milisegundos.
+   } catch (InterruptedException e) {
+    // TODO Auto-generated catch block
+    e.printStackTrace();
+   }
+   
+  }
+ }
+}

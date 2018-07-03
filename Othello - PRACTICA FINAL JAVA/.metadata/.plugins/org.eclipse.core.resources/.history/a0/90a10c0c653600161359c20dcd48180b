@@ -1,0 +1,57 @@
+package Othello;
+
+public class Control {
+	/**
+	 * @param dato
+	 * @return coordenadas
+	 * Combierte un caracter en un numero, se tiene en cuenta si es mayuscula o minuscula
+	 */
+	public int numColumna(char dato) {
+		int columna = 0;
+
+		if (dato >= 'a' && dato <= 'a'+Constantes.TAMANIO_TABLERO-1)
+			columna =  dato - 97;
+		if(dato >= 'A' && dato <= 'A'+Constantes.TAMANIO_TABLERO-1)
+			columna =  dato - 65;
+
+		return columna;
+	}
+
+	/**
+	 * Valida el dato introducido como ficha o movimiento a especificar.
+	 * 
+	 * @param dato
+	 * @return validez del dato
+	 */
+	public boolean validarDato(char dato) {
+
+		boolean exito = false;
+
+		if ((dato >= 'a' && dato <= 'a'+Constantes.TAMANIO_TABLERO-1) || (dato >= 'A' && dato <= 'A'+Constantes.TAMANIO_TABLERO-1))
+			exito = true;
+
+		return exito;
+	}
+	
+	/**
+	 * Metodo que cuenta las fichas blancas y negras, a partir de ahi establece quien gana o si quedan empate.
+	 */
+	public void ganador(Tablero tablero) {
+		
+		//SI EL RECUENTO DE BLANCAS Y NEGRAS ES IGUAL SE DA EMPATE
+		if (tablero.contadorFicha(Ficha.BLANCA) == tablero.contadorFicha(Ficha.NEGRA))
+			System.out.println(
+					Constantes.MORADO+"\t!!Ohhhh ... Nos encontramos ante un empate¡¡\n\tFIN DE LA PARTIDA\n\t   (Os espero para una revancha :D)"+Constantes.RESET);
+			
+		//SI EL RECUENTO DE NEGRAS ES MENOR QUE EL DE BLANCAS, GANAN LAS BLANCAS
+		else if (tablero.contadorFicha(Ficha.BLANCA) > tablero.contadorFicha(Ficha.NEGRA))
+			System.out.println(
+					Constantes.MORADO+"\t¡¡Ganan las fichas blancas!!\n\tFIN DE LA PARTIDA\n\t   (En hora buena jugador de fichas blancas.)"+Constantes.RESET);
+		
+		//SI EL RECUENTO DE BLANCAS ES MENOR QUE EL DE NEGRAS, GANAN LAS BLANCAS
+		else if (tablero.contadorFicha(Ficha.BLANCA) < tablero.contadorFicha(Ficha.NEGRA))
+			System.out.println(
+					Constantes.MORADO+"\t¡¡Ganan las fichas negras!!\n\tFIN DE LA PARTIDA\n\t   (En hora buena jugador de fichas negras.)"+Constantes.RESET);
+
+	}
+}

@@ -1,0 +1,41 @@
+public class Ejercicio06 {
+
+	/**
+	 * Sea MAX una constante que vale 1000, x una variable decimal y a, b e i
+	 * variables enteras. Indicar las sentencias válidas y su valor, razonando
+	 * la respuesta. Suponer a = 3 y b = 4.
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		final int  MAX = 1000;
+		int a = 3,b = 4,i;
+		double x;
+		
+		
+		
+		i = (990 - MAX)%a;
+		System.out.println("a) i = (990 - MAX) / a\nLa expresion correcta es i = (990 - MAX)%a;\nLa respuesta es"+i);
+		
+		//i = b%0;
+		System.out.println("b) i = b / 0\nNo se puede dividir un numero entre 0\nLa expresion queda i = b%0");
+		
+		i = a % (MAX - 990);
+		System.out.println("c) i = a % (MAX - 990)\nLa expresion es correcta\nEl resultado es "+i);
+		
+		i = ((MAX - 990)*100)% a;
+		System.out.println("d) i = (MAX - 990) % a\n La expreion queda ((MAX - 990)*100)% a \nEl resultado "+i);
+		
+		i = (int)3.14 * a;
+		System.out.println("e) i = 3.14 * a\nLa expresion queda \nEl resultado es "+i);
+				
+		x = a%b;
+		System.out.println("f) x = a / b\nLa expresion queda x = a%b\nEl resultado es"+x);
+		
+		x = (a*100) % (a%b);
+		System.out.println("g) x = a % (a / b)\nLa expresion es x = (a*100) % (a%b)\nSu resultado es "+x);
+		
+		i = a%b;
+		System.out.println("h) i = a / b\n la expresion quedai = a%b \nEl resultado es "+i);
+	}
+}

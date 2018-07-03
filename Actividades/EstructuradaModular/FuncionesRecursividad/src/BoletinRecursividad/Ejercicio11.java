@@ -1,0 +1,62 @@
+package BoletinRecursividad;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+
+public class Ejercicio11 {
+	
+	static Scanner scan= new Scanner (System.in);
+
+	public static void main(String[] args) {
+		/*
+		 * Escribe una función que calcule la serie de Fibonacci. La serie de Fibonacci se define mediante: 
+		 * a0 = a1 = 1 an = an-1 + an-2
+		 * Ejemplo: 1,1,2,3,5,8,13,21,....
+		 */
+		
+		/** VARIABLES **/
+		int num=6, i, resultado=0;
+		
+		/** CÓDIGO **/
+		
+		num=introInt("Introduzca un entero positivo mayor de 0: ");
+		
+		System.out.printf("Serie fibonacci: ");
+		for (i=1;i<=num;i++){
+			resultado= fibonacci(i);
+			System.out.printf("%d ", resultado);
+		}
+		
+		scan.close();
+	}
+	
+	public static int fibonacci(int num){
+		int resultado;
+		
+		if (num<2) resultado=num;
+		else resultado=fibonacci(num-1)+fibonacci(num-2);
+		
+		return resultado;
+	}
+	
+	public static int introInt(String mensaje){
+		int num=0;
+		
+		do {
+			try{
+				System.out.printf("%s%n",mensaje);
+				num=scan.nextInt();
+				if (num<1) System.out.printf("%nValor no válido, por favor: ");
+			}catch(InputMismatchException e){
+				//Imprimimos el mensaje de error
+				System.out.printf("%n¡¡ERROR!! El valor introducido no es reconocido, por favor:%n%n");
+				//Limpiamos el buffer
+				scan.nextLine();
+				//Forza la repetición del bucle
+				num=-1;
+			}
+		} while (num<1);
+		
+		return num;
+	} 	
+}

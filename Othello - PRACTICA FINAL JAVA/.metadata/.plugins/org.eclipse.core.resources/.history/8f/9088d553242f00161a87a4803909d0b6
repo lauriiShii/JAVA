@@ -1,0 +1,27 @@
+/**
+ * Interfaz que contiene los métodos de utilidad para una dama.
+ * @author laura
+ *
+ */
+public interface Dama{
+	/**
+	 * Indica si una dama puede comer.
+	 * @param tablero
+	 * @return éxito de la comprobación
+	 */
+	public boolean puedeComerDama(Tablero tablero);
+	
+	/**
+	 * Indica si una dama puede moverse.
+	 * @param tablero
+	 * @return éxito de la comprobación
+	 */
+	public boolean puedeMoverseDama(Tablero tablero);
+	
+	/**
+	 * Devuelve las posiciones posibles en las que puede situarse una dama.
+	 * @param tablero
+	 * @return lista de movimientos válidos
+	 */
+	public Posicion[] posicionesPosiblesDama(Tablero tablero);
+}

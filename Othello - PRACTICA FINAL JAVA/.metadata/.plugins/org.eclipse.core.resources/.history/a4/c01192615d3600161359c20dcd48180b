@@ -1,0 +1,76 @@
+package Othello;
+
+import Teclado.Rango;
+import Teclado.Teclado;
+
+public class Jugador {
+
+	Ficha color;
+	Casilla ficha = new Casilla();
+
+	/**
+	 * @param tablero
+	 * pide la posicion al usuario donde quiere posicionar la ficha.
+	 * Comprueba que la posicion sea valida sino la vuelve a pedir.
+	 */
+	public void jugar (Tablero tablero){
+		
+		ficha.colorFicha=color;
+		
+		//SI HAY MOVIMIENTOS POSIBLES SE PIDE POSICION
+		if(tablero.comprobarVolteable(color).size()!=0){
+			char columna;
+			
+			do{
+				//FILA
+				ficha.posicion.fila = Teclado.numeroInt("\tIntroduce fila:",1,8,Rango.INCLUIDO_MIN_MAX)-1;
+				
+				//COLUMNA
+				columna = Teclado.caracter("\tIntroduce columna:");
+				validarDato(columna);
+				ficha.posicion.columna = numColumna(columna)-1;
+				
+			}while(!tablero.posicionValida(ficha) || validarDato(columna) == false );
+		}
+	}
+
+	/**
+	 * @param dato
+	 * @return coordenadas
+	 * Combierte un caracter en un numero, se tiene en cuenta si es mayuscula o minuscula
+	 */
+	public int numColumna(char dato) {
+		int columna = 0;
+
+		if (dato >= 'a' && dato <= 'a'+Constantes.TAMANIO_TABLERO-1)
+			columna =  dato - 96;
+		if(dato >= 'A' && dato <= 'A'+Constantes.TAMANIO_TABLERO-1)
+			columna =  dato - 64;
+		if ((int)dato >= 1 && (int)dato <= Constantes.TAMANIO_TABLERO)
+			columna = dato;
+		else
+			columna = 9999999;
+		return columna;
+	}
+
+	/**
+	 * Valida el dato introducido como ficha o movimiento a especificar.
+	 * 
+	 * @param dato
+	 * @return validez del dato
+	 */
+	public boolean validarDato(char dato) {
+
+		boolean exito = false;
+
+		if ((dato >= 'a' && dato <= 'a'+Constantes.TAMANIO_TABLERO-1) || 
+				(dato >= 'A' && dato <= 'A'+Constantes.TAMANIO_TABLERO-1)||
+				(dato >= 1 && dato <= Constantes.TAMANIO_TABLERO))
+			exito = true;
+		else
+			System.out.println("CARACTER NO RECONOCIDO");
+
+		return exito;
+	}
+
+}

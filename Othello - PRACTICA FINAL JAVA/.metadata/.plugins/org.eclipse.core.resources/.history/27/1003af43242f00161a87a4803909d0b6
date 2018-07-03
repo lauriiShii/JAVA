@@ -1,0 +1,307 @@
+/**
+ * Clase que representa una ficha genérica sin color
+ * @author joaquin
+ *
+ */
+public abstract class Ficha implements Dama{
+	protected Posicion posicion;
+	protected Propietario propietario;
+	protected boolean dama;
+	
+	/**
+	 * Constructor de la clase.
+	 * @param posicion
+	 * @param propietario
+	 */
+	Ficha(Posicion posicion, Propietario propietario){
+		this.posicion=posicion;
+		this.propietario=propietario;
+		dama=false;
+	}
+
+	public Posicion getPosicion(){
+		return posicion;
+	}
+	
+	public void setPosicion(Posicion posicion){
+		this.posicion=posicion;
+	}
+
+	public Propietario getPropietario(){
+		return propietario;
+	}
+	
+	public boolean isDama(){
+		return dama;
+	}
+	
+	public void setDama(boolean dama){
+		this.dama=dama;
+	}
+
+	public String toString(){
+		if(dama){
+			return " D";
+		}
+		else{
+			return " o";
+		}
+	}
+	
+	/**
+	 * Compara dos fichas.
+	 */
+	public boolean equals(Object obj) {
+		boolean resultado=false;
+		if(obj instanceof Ficha){
+			if(posicion.equals(((Ficha)obj).posicion) && propietario==((Ficha)obj).propietario && dama==((Ficha)obj).dama){
+				resultado=true;
+			}
+		}
+		return resultado;
+	}
+	
+	/**
+	 * Indica si una ficha puede comer.
+	 * @param tablero
+	 * @return éxito de la comprobación
+	 */
+	public boolean puedeComer(Tablero tablero){
+		boolean exito=false;
+		int i, comer=0;
+		Posicion[] posiciones=posicionesPosibles(tablero);
+		for(i=0;i<posiciones.length;i++){
+			if(posiciones[i]!=null){
+				if(Math.abs(getPosicion().getX()-posiciones[i].getX())==2 && Math.abs(getPosicion().getY()-posiciones[i].getY())==2){
+					comer++;
+				}
+			}
+		}
+		if(comer>0){
+			exito=true;
+		}
+		return exito;
+	}
+	
+	/**
+	 * Indica si una ficha puede moverse.
+	 * @param tablero
+	 * @return éxito de la comprobación
+	 */
+	public boolean puedeMoverse(Tablero tablero){
+		boolean exito=false;
+		int i, moverse=0;
+		Posicion[] posiciones=posicionesPosibles(tablero);
+		for(i=0;i<posiciones.length;i++){
+			if(posiciones[i]!=null){
+				if(Math.abs(getPosicion().getX()-posiciones[i].getX())==1 && Math.abs(getPosicion().getY()-posiciones[i].getY())==1){
+					moverse++;
+				}
+			}
+		}
+		if(moverse>0){
+			exito=true;
+		}
+		return exito;
+	}
+	
+	/**
+	 * Indica las posiciones posibles para una ficha.
+	 * @param tablero
+	 * @return lista de posiciones
+	 */
+	public abstract Posicion[] posicionesPosibles(Tablero tablero);
+	
+	public boolean puedeComerDama(Tablero tablero){
+		boolean exito=false;
+		int x, y, i, contador=0;
+		Propietario oponente;
+		if(getPropietario()==Propietario.OPONENTE) oponente=Propietario.JUGADOR;
+		else oponente=Propietario.OPONENTE;
+		i=0;
+		x=getPosicion().getX()-1;
+		y=getPosicion().getY()+1;
+		while(x>=2 && y<=7 && !tablero.hayFichaPropietario(x,y,propietario)){
+			if(i==0 && tablero.hayFichaPropietario(x,y,oponente) && !tablero.hayFicha(x-1,y+1)){
+				contador++;
+			}
+			if(i>0 && tablero.hayFichaPropietario(x,y,oponente) && !tablero.hayFicha(x-1,y+1) && !tablero.hayFicha(x+1,y-1)){
+				contador++;
+			}
+			x--;
+			y++;
+			i++;
+		}
+		i=0;
+		x=getPosicion().getX()+1;
+		y=getPosicion().getY()+1;
+		while(x<=7 && y<=7 && !tablero.hayFichaPropietario(x,y,propietario)){
+			if(i==0 && tablero.hayFichaPropietario(x,y,oponente) && !tablero.hayFicha(x+1,y+1)){
+				contador++;
+			}
+			if(i>0 && tablero.hayFichaPropietario(x,y,oponente) && !tablero.hayFicha(x+1,y+1) && !tablero.hayFicha(x-1,y-1)){
+				contador++;
+			}
+			x++;
+			y++;
+			i++;
+		}
+		i=0;
+		x=getPosicion().getX()-1;
+		y=getPosicion().getY()-1;
+		while(x>=2 && y>=2 && !tablero.hayFichaPropietario(x,y,propietario)){
+			if(i==0 && tablero.hayFichaPropietario(x,y,oponente) && !tablero.hayFicha(x-1,y-1)){
+				contador++;
+			}
+			if(i>0 && tablero.hayFichaPropietario(x,y,oponente) && !tablero.hayFicha(x-1,y-1) && !tablero.hayFicha(x+1,y+1)){
+				contador++;
+			}
+			x--;
+			y--;
+			i++;
+		}
+		i=0;
+		x=getPosicion().getX()+1;
+		y=getPosicion().getY()-1;
+		while(x<=7 && y>=2 && !tablero.hayFichaPropietario(x,y,propietario)){
+			if(i==0 && tablero.hayFichaPropietario(x,y,oponente) && !tablero.hayFicha(x+1,y-1)){
+				contador++;
+			}
+			if(i>0 && tablero.hayFichaPropietario(x,y,oponente) && !tablero.hayFicha(x+1,y-1) && !tablero.hayFicha(x-1,y+1)){
+				contador++;
+			}
+			x++;
+			y--;
+			i++;
+		}
+		if(contador>0) exito=true;
+		return exito;
+	}
+	
+	public boolean puedeMoverseDama(Tablero tablero){
+		boolean exito=false;
+		int contador=0;
+		if(getPosicion().getX()-1>=1 && getPosicion().getY()+1<=8 && !tablero.hayFicha(getPosicion().getX()-1, getPosicion().getY()+1)){
+			contador++;
+		}
+		if(getPosicion().getX()+1<=8 && getPosicion().getY()+1<=8 && !tablero.hayFicha(getPosicion().getX()+1, getPosicion().getY()+1)){
+			contador++;
+		}
+		if(getPosicion().getX()-1>=1 && getPosicion().getY()-1>=1 && !tablero.hayFicha(getPosicion().getX()-1, getPosicion().getY()-1)){
+			contador++;
+		}
+		if(getPosicion().getX()+1<=8 && getPosicion().getY()-1>=1 && !tablero.hayFicha(getPosicion().getX()+1, getPosicion().getY()-1)){
+			contador++;
+		}
+		if(contador>0){
+			exito=true;
+		}
+		return exito;
+	}
+	
+	public Posicion[] posicionesPosiblesDama(Tablero tablero){
+		Posicion[] posiciones=new Posicion[13];
+		int i=0, x=1, y=8, x2, y2, contador=0;
+		Propietario oponente;
+		if(getPropietario()==Propietario.OPONENTE) oponente=Propietario.JUGADOR;
+		else oponente=Propietario.OPONENTE;
+		int come=0;
+		if(puedeComerDama(tablero)) come=1;
+		x=getPosicion().getX()-1;
+		y=getPosicion().getY()+1;
+		while(x>=1 && y<=8){
+			x2=x+1;
+			y2=y-1;
+			contador=0;
+			do{
+				if(tablero.hayFichaPropietario(x2, y2, oponente)){
+					contador++;
+				}
+				x2++;
+				y2--;
+			}while(x2<getPosicion().getX() && y2>getPosicion().getY());
+			if(contador==come && x>=1 && y<=8 && !tablero.hayFicha(x, y)){
+				posiciones[i]=new Posicion(x,y); 
+				i++;
+			}
+			x--;
+			y++;
+		}
+		x=getPosicion().getX()+1;
+		y=getPosicion().getY()+1;
+		while(x<=8 && y<=8){
+			x2=x-1;
+			y2=y-1;
+			contador=0;
+			do{
+				if(tablero.hayFichaPropietario(x2, y2, oponente)){
+					contador++;
+				}
+				x2--;
+				y2--;
+			}while(x2>getPosicion().getX() && y2>getPosicion().getY());
+			if(contador==come && x<=8 && y<=8 && !tablero.hayFicha(x, y)){
+				posiciones[i]=new Posicion(x,y); 
+				i++;
+			}
+			x++;
+			y++;
+		}
+		x=getPosicion().getX()-1;
+		y=getPosicion().getY()-1;
+		while(x>=1 && y>=1){
+			x2=x+1;
+			y2=y+1;
+			contador=0;
+			do{
+				if(tablero.hayFichaPropietario(x2, y2, oponente)){
+					contador++;
+				}
+				x2++;
+				y2++;
+			}while(x2<getPosicion().getX() && y2<getPosicion().getY());
+			if(contador==come && x>=1 && y>=1 && !tablero.hayFicha(x, y)){
+				posiciones[i]=new Posicion(x,y); 
+				i++;
+			}
+			x--;
+			y--;
+		}
+		x=getPosicion().getX()+1;
+		y=getPosicion().getY()-1;
+		while(x<=8 && y>=1){
+			x2=x-1;
+			y2=y+1;
+			contador=0;
+			do{
+				if(tablero.hayFichaPropietario(x2, y2, oponente)){
+					contador++;
+				}
+				x2--;
+				y2++;
+			}while(x2>getPosicion().getX() && y2<getPosicion().getY());
+			if(contador==come && x<=8 && y>=1 && !tablero.hayFicha(x, y)){
+				posiciones[i]=new Posicion(x,y); 
+				i++;
+			}
+			x++;
+			y--;
+		}
+		return posiciones;
+	}
+	
+	/**
+	 * Mueve una ficha a otra casilla.
+	 * @param posicion
+	 */
+	public void moverse(Posicion posicion){
+		this.posicion.setX(posicion.getX());
+		this.posicion.setY(posicion.getY());
+		convertirseEnDama();
+	}
+	
+	/**
+	 * Convierte a una ficha en dama si cumple las condiciones.
+	 */
+	public abstract void convertirseEnDama();
+}

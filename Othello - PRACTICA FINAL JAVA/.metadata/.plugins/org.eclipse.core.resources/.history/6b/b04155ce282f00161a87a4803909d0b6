@@ -1,0 +1,124 @@
+/**
+ * Clase que gestiona las fichas jugables y la validación de datos.
+ * @author laura
+ *
+ */
+public class ControlFichas{
+	/**
+	 * Convierte una cadena en una posición con 2 coordenadas.
+	 * @param xy
+	 * @return coordenadas
+	 */
+	public int[] modificarCoordenadas(String xy){
+		int[] coor=new int[2];
+		coor[0]=((int)xy.charAt(0))-96;
+		coor[1]=((int)xy.charAt(1))-48;
+		return coor;
+	}
+	
+	/**
+	 * Cuenta las fichas que cada jugador tiene en un momento dado.
+	 * @param tablero
+	 * @param propietario
+	 * @return número de fichas
+	 */
+	public int contarFichas(Tablero tablero, Propietario propietario){
+		int i, contador=0;
+		for(i=0;i<tablero.getFichas().length;i++){
+			if(tablero.getFichas()[i]!=null && tablero.getFichas()[i].getPropietario()==propietario){
+				contador++;
+			}			
+		}
+		return contador;
+	}
+	
+	/**
+	 * Dependiendo de las fichas que comen o no, devuelve las fichas que se pueden seleccionar.
+	 * @param tablero
+	 * @param propietario
+	 * @return fichas que se pueden seleccionar
+	 */
+	public Ficha[] fichasSeleccionables(Tablero tablero, Propietario propietario){
+		Ficha[] seleccionables=new Ficha[12];
+		int i, comilonas=0;
+		for(i=0;i<fichasQueComen(tablero, propietario).length;i++){
+			if(fichasQueComen(tablero, propietario)[i]!=null){
+				comilonas++;
+			}
+		}
+		if(comilonas>0){
+			seleccionables=fichasQueComen(tablero, propietario);
+		}
+		else{
+			seleccionables=fichasQueMueven(tablero, propietario);
+		}
+		return seleccionables;
+	}
+	
+	/**
+	 * Devuelve las fichas que pueden comer en un momento dado.
+	 * @param tablero
+	 * @param propietario
+	 * @return fichas que pueden comer
+	 */
+	private Ficha[] fichasQueComen(Tablero tablero, Propietario propietario){
+		Ficha[] comen=new Ficha[12];
+		int i, u=0;
+		for(i=0;i<tablero.getFichas().length;i++){
+			if(tablero.getFichas()[i]!=null && tablero.getFichas()[i].getPropietario()==propietario){
+				if(!tablero.getFichas()[i].isDama() && tablero.getFichas()[i].puedeComer(tablero)){
+					comen[u]=tablero.getFichas()[i];
+					u++;
+				}
+				if(tablero.getFichas()[i].isDama() && tablero.getFichas()[i].puedeComerDama(tablero)){
+					comen[u]=tablero.getFichas()[i];
+					u++;
+				}
+			}
+		}		
+		return comen;
+	}
+	
+	/**
+	 * Devuelve las fichas que pueden moverse en un momento dado.
+	 * @param tablero
+	 * @param propietario
+	 * @return fichas que se pueden mover
+	 */
+	private Ficha[] fichasQueMueven(Tablero tablero, Propietario propietario){
+		Ficha[] mueven=new Ficha[12];
+		int i, u=0;
+		for(i=0;i<tablero.getFichas().length;i++){
+			if(tablero.getFichas()[i]!=null && tablero.getFichas()[i].getPropietario()==propietario){
+				if(!tablero.getFichas()[i].isDama() && tablero.getFichas()[i].puedeMoverse(tablero)){
+					mueven[u]=tablero.getFichas()[i];
+					u++;
+				}
+				if(tablero.getFichas()[i].isDama() && tablero.getFichas()[i].puedeMoverseDama(tablero)){
+					mueven[u]=tablero.getFichas()[i];
+					u++;
+				}
+			}
+		}		
+		return mueven;
+	}
+	
+	/**
+	 * Valida el dato introducido como ficha o movimiento a especificar.
+	 * @param dato
+	 * @return validez del dato
+	 */
+	public boolean validarDato(String dato){
+		boolean exito=false;
+		if(dato.length()==2){
+			if(dato.charAt(1)=='1' || dato.charAt(1)=='2' || dato.charAt(1)=='3' || dato.charAt(1)=='4'
+			|| dato.charAt(1)=='5' || dato.charAt(1)=='6' || dato.charAt(1)=='7' || dato.charAt(1)=='8'){
+				if(dato.charAt(0)=='a' || dato.charAt(0)=='b' || dato.charAt(0)=='c' || dato.charAt(0)=='d'
+				|| dato.charAt(0)=='e' || dato.charAt(0)=='f' || dato.charAt(0)=='g' || dato.charAt(0)=='h'){
+					exito=true;
+				}
+			}
+		}
+		return exito;
+	}
+}

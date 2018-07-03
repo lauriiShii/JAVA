@@ -1,0 +1,55 @@
+/**
+ * Clase para representar a las fichas blancas.
+ * @author joaquin
+ *
+ */
+public class FichaBlanca extends Ficha{
+	/**
+	 * Constructor de la clase.
+	 * @param posicion
+	 * @param propietario
+	 */
+	FichaBlanca(Posicion posicion, Propietario propietario){
+		super(posicion, propietario);
+	}
+	
+	public Posicion[] posicionesPosibles(Tablero tablero){
+		int comer=0;
+		Posicion[] posiciones=new Posicion[2];
+		if(posicion.getX()-2>=1 && posicion.getY()+2<=8){
+			if(!tablero.hayFicha(posicion.getX()-2, posicion.getY()+2)){
+				if(tablero.hayFichaPropietario(posicion.getX()-1, posicion.getY()+1, Propietario.OPONENTE)){
+					posiciones[0]=new Posicion(posicion.getX()-2, posicion.getY()+2);
+					comer++;
+				}
+			}			
+		}
+		if(posicion.getX()+2<=8 && posicion.getY()+2<=8){
+			if(!tablero.hayFicha(posicion.getX()+2, posicion.getY()+2)){
+				if(tablero.hayFichaPropietario(posicion.getX()+1, posicion.getY()+1, Propietario.OPONENTE)){
+					posiciones[1]=new Posicion(posicion.getX()+2, posicion.getY()+2);
+					comer++;
+				}
+			}
+		}
+		if(comer==0){
+			if(posicion.getX()-1>=1 && posicion.getY()+1<=8){
+				if(!tablero.hayFicha(posicion.getX()-1, posicion.getY()+1)){
+					posiciones[0]=new Posicion(posicion.getX()-1, posicion.getY()+1);
+				}
+			}
+			if(posicion.getX()+1<=8 && posicion.getY()+1<=8){
+				if(!tablero.hayFicha(posicion.getX()+1, posicion.getY()+1)){
+					posiciones[1]=new Posicion(posicion.getX()+1, posicion.getY()+1);
+				}
+			}	
+		}
+		return posiciones;
+	}
+	
+	public void convertirseEnDama(){
+		if(posicion.getY()==8){
+			dama=true;
+		}
+	}
+}

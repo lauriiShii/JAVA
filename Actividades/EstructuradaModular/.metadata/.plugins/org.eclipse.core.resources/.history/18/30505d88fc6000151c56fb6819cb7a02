@@ -1,0 +1,22 @@
+import java.util.Random;
+
+public class Ejercicio06 {
+
+	/**
+	 * Hacer un programa que saque una carta aleatoria de una baraja donde haya
+	 * Picas ♠, Corazones ♥, Diamantes ♦ y Tréboles ♣. Las cartas irán del as al
+	 * diez y habrá tres figuras: jota, reina y rey.
+	 */
+	public static void main(String[] args) {
+
+		/**VARIABLES Y OBJETOS*/
+		Random aleatorioCarta = new Random();
+		int carta = aleatorioCarta.nextInt(1-13+1)+13;
+		Random aleatorioPalo = new Random();
+		int palo =  aleatorioPalo.nextInt(1-4+1)+4;
+
+		System.out.println("Carta: "+carta+" "+palo);
+
+	}
+
+}

@@ -1,0 +1,25 @@
+1465777954320	Rename local variable 'it'
+1465777984449	Rename local variable 'fichascerca'
+1465778001500	Rename local variable 'fichascerca'
+1465778460812	Rename local variable 't'
+1465778469853	Rename local variable 't'
+1465779589126	Rename method 'PosicionarVoltear'
+1465996686274	Delete element
+1465996777202	Delete element
+1465996783367	Delete element
+1465996803738	Rename type 'Jugador1'
+1465996856214	Rename type 'Jugador'
+1465996966855	Delete element
+1465997164040	Delete element
+1465997238056	Rename type 'PartidaIA'
+1465997329709	Rename field 'IA'
+1465997592438	Delete element
+1465998173126	Rename field 'Jugador'
+1466017945193	Rename local variable 'coor'
+1466017960249	Rename local variable 'xy'
+1466019152511	Delete element
+1466362125493	Rename local variable 's'
+1466362146596	Rename method 'createArray'
+1466364491809	Delete element
+1466365102474	Delete element
+1466372526667	Rename type 'IA'

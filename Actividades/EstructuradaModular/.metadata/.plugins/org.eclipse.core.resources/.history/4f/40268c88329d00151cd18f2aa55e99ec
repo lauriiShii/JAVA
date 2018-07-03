@@ -1,0 +1,43 @@
+package Boletin;
+
+public class Ejercicio17 {
+	/**Ordenar un array unidimensional según el método de la burbuja. Consiste en comparar
+	pares de elementos adyacentes en un array y si están desordenados intercambiarlos hasta que
+	estén todos ordenados. Este método consiste en ordenar el array moviendo el mayor hasta la
+	última casilla comparando e intercambiando los números comenzando desde la casilla cero
+	hasta situarlo en la última posición. Una vez situado el más grande, se procede a encontrar y
+	situar el siguiente más grande comparando e intercambiando de nuevo los números desde el
+	inicio del array, y así sigue sucesivamente hasta ordenar todos los elementos del array.*/
+	public static void main(String[] args) {
+		
+		/**DECLARACION DE VARIABLES Y OBJETOS*/
+		int datos [] = {50, 26, 7, 9, 15, 27}, i, j, k, numMayor = 0, numSiguientePos;
+	
+		/**DESPLAZAMOS MAYOR A LA DERECHA*/
+		for (k = 0; k < datos.length; k++)
+			for (i = 0; i < datos.length; i++){
+				
+				//MOSTRAMOS CADA MOVIMIENTO
+				for (j = 0; j < datos.length; j++)
+					System.out.print(datos[j]+" ");
+				System.out.println("");
+		
+				/**BUSCAMOS EL MAYOR DATO ENTRE datos*/
+				if (datos[i] > numMayor)
+				   numMayor = datos [i];
+				   
+				/**CORREMOS EL NUMERO MAYOR HACIA LA DERECHA CONTROLANDO QUE NO SEA EL ULTIMO*/
+				if ( i != datos.length-1){
+					numSiguientePos = datos [i+1];
+					datos [i+1] = numMayor;
+					datos [i] = numSiguientePos;
+				}
+				else{
+					System.out.printf("Fin desplazamiento %d.%n%n", k+1);
+				}
+					
+			}
+	
+	}
+
+}

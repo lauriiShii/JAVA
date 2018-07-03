@@ -1,0 +1,38 @@
+package Othello;
+
+public class Control {
+
+	/**
+	 * Convierte una cadena en una posici�n con 2 coordenadas.
+	 * 
+	 * @param dato
+	 * @return coordenadas
+	 */
+	public int[] modificarCoordenadas(String dato) {
+		int[] columna = new int[2];
+		columna[0] = ((int) dato.charAt(0)) - 96;
+		
+		return columna;
+	}
+
+	/**
+	 * Valida el dato introducido como ficha o movimiento a especificar.
+	 * 
+	 * @param dato
+	 * @return validez del dato
+	 */
+	public boolean validarDato(String dato) {
+		boolean exito = false;
+		if (dato.length() == 1) {
+			if (dato.charAt(0) == 'a' || dato.charAt(0) == 'b' || dato.charAt(0) == 'c' || dato.charAt(0) == 'd'
+					|| dato.charAt(0) == 'e' || dato.charAt(0) == 'f' || dato.charAt(0) == 'g'
+					|| dato.charAt(0) == 'h') 
+				exito = true;
+
+			else
+				System.out.println("¡ERROR! Introduce un dato correcto.");
+		}
+		return exito;
+	}
+
+}

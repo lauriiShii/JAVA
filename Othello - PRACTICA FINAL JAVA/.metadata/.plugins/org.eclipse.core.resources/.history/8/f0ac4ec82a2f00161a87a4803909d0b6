@@ -1,0 +1,139 @@
+import java.util.ArrayList;
+import java.util.Random;
+/**
+ * Clase que simula cierto pensamiento por parte del ordenador en el modo "vs PC".
+ * @author laura
+ *
+ */
+public class IA{
+	/**
+	 * Elige una ficha para mover al azar si ninguna tiene movimientos buenos.
+	 * @param tablero
+	 * @return ficha que moverá el PC
+	 */
+	private Posicion elegirFichaSinCriterio(Tablero tablero){
+		Random aleatorio=new Random();
+		int i=0, contador=0;
+		Ficha ficha=null;
+		ControlFichas control=new ControlFichas();
+		Ficha[] fichas=control.fichasSeleccionables(tablero, Propietario.OPONENTE);
+		for(i=0;i<fichas.length;i++){
+			if(fichas[i]!=null){
+				contador++;
+			}
+		}
+		if(contador>0){
+			do{
+				ficha=fichas[aleatorio.nextInt(fichas.length)];
+			}while(ficha==null);
+		}
+		else{
+			ficha=new FichaNegra(new Posicion(1,2), Propietario.OPONENTE);
+		}
+		return ficha.getPosicion();
+	}
+	
+	/**
+	 * Elige una posición para la ficha elegida.
+	 * @param tablero
+	 * @param ficha
+	 * @return movimiento que hará el PC
+	 */
+	public Posicion elegirMovimiento(Tablero tablero, Ficha ficha){
+		Random aleatorio=new Random();
+		Posicion posicion;
+		Posicion[] posiciones;
+		if(ficha.isDama()){
+			posiciones=ficha.posicionesPosiblesDama(tablero);
+		}
+		else{
+			posiciones=ficha.posicionesPosibles(tablero);
+		}
+		do{
+			posicion=posiciones[aleatorio.nextInt(posiciones.length)];
+		}while(posicion==null);
+		return posicion;
+	}
+	
+	/**
+	 * Elige una ficha si tiene movimientos buenos sobre otras.
+	 * @param tablero
+	 * @return ficha que moverá el PC
+	 */
+	public Posicion elegirFichaConCriterio(Tablero tablero){
+		Random aleatorio=new Random();
+		int i=0, u=0, h=0, contador=0, f=0;
+		Ficha ficha=null;
+		ControlFichas control=new ControlFichas();
+		Ficha[] fichasJugador=control.fichasSeleccionables(tablero, Propietario.JUGADOR);
+		Ficha[] fichasOponente=control.fichasSeleccionables(tablero, Propietario.OPONENTE);
+		Ficha[] fichasElegidas=new Ficha[12];
+		ArrayList<Posicion> posicionesJugador=new ArrayList<Posicion>();
+		Posicion[] posicionesJ;
+		for(i=0;i<fichasJugador.length;i++){
+			if(fichasJugador[i]!=null){
+				if(!fichasJugador[i].isDama()){
+					for(u=0;u<fichasJugador[i].posicionesPosibles(tablero).length;u++){
+						if(fichasJugador[i].posicionesPosibles(tablero)[u]!=null){
+							posicionesJugador.add(fichasJugador[i].posicionesPosibles(tablero)[u]);
+						}
+					}
+				}
+				if(fichasJugador[i].isDama()){
+					for(u=0;u<fichasJugador[i].posicionesPosiblesDama(tablero).length;u++){
+						if(fichasJugador[i].posicionesPosiblesDama(tablero)[u]!=null){
+							posicionesJugador.add(fichasJugador[i].posicionesPosiblesDama(tablero)[u]);
+						}
+					}
+				}
+			}
+		}
+		posicionesJ=(Posicion[])posicionesJugador.toArray(new Posicion[posicionesJugador.size()]);
+		for(i=0;i<fichasOponente.length;i++){
+			if(fichasOponente[i]!=null){
+				if(!fichasOponente[i].isDama()){
+					for(u=0;u<fichasOponente[i].posicionesPosibles(tablero).length;u++){
+						if(fichasOponente[i].posicionesPosibles(tablero)[u]!=null){
+							for(h=0;h<posicionesJ.length;h++){
+								if(fichasOponente[i].posicionesPosibles(tablero)[u].equals(posicionesJ[h])){
+									contador++;
+								}
+							}
+						}
+					}
+				}
+				if(fichasOponente[i].isDama()){
+					for(u=0;u<fichasOponente[i].posicionesPosiblesDama(tablero).length;u++){
+						if(fichasOponente[i].posicionesPosiblesDama(tablero)[u]!=null){
+							for(h=0;h<posicionesJ.length;h++){
+								if(fichasOponente[i].posicionesPosiblesDama(tablero)[u].equals(posicionesJ[h])){
+									contador++;
+								}
+							}
+						}
+					}
+				}
+			}
+			if(fichasOponente[i]!=null && contador==0){
+				fichasElegidas[f]=fichasOponente[i];
+				f++;
+			}
+			contador=0;
+		}
+		contador=0;
+		for(i=0;i<fichasElegidas.length;i++){
+			if(fichasElegidas[i]!=null){
+				contador++;
+			}
+		}
+		if(contador==0){
+			ficha=new FichaNegra(elegirFichaSinCriterio(tablero), Propietario.OPONENTE);
+		}
+		else{
+			do{
+				ficha=fichasElegidas[aleatorio.nextInt(fichasElegidas.length)];
+			}while(ficha==null);
+		}
+		return ficha.getPosicion();
+	}
+}

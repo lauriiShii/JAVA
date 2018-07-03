@@ -1,0 +1,42 @@
+package Boletin;
+
+import Teclado.Teclado;
+
+public class Ejercicio18 {
+	/**Escribe un programa que halle si una matriz introducida es un cuadrado mágico. Un
+	cuadrado mágico es una matriz cuadrada NxN donde las sumas de cada columna, de cada
+	fila y de cada diagonal son iguales.*/
+	public static void main(String[] args) {
+		
+		/**DECLAraMOS VARIABLES Y OBJETOS*/
+		int tamaño = 0, i, j, k, l, datos [][];
+		
+		/**PEDIMOS DATOS AL USUARIO*/
+		//TAMAÑOS
+		tamaño = Teclado.numeroInt("TAMAÑO DE LA MATRIZ NxN:  ");
+		//Damos tamaño a datos y los arrays de ayuda
+		datos = new int [tamaño][tamaño];
+		
+		//DATOS
+		System.out.println("INTRODUCE DATOS: ");
+		for(i=0; i < datos.length; i++)
+			for(j=0; j < datos[i].length; j++)
+				datos [i][j] = Teclado.numeroInt("Fila "+i+" y columna "+j+" : ");
+		
+		/**MOSTRAMOS MATRIZ*/
+		System.out.println("\nMATRIZ INTRODUCIDA");
+		for (k = 0; k < datos.length; k++) {
+			for (l = 0; l < datos[k].length; l++) {
+				System.out.print(datos [k][l]+"\t");
+			}
+			System.out.println("");
+		}
+		
+		/**COMPROBAMOS SI ES UN CUADRADO MAGICO*/
+		// LA SUMA DE CADA FILA DEBE SER IGUAL
+		// LA SUMA DE CADA COLUMNA DEBE SER IGUAL
+		// LA SUMA DE CADA DIAGONAL DEBE SER IGUAL 
+
+	}
+
+}

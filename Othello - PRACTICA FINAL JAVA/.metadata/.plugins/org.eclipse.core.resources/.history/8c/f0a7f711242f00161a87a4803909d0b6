@@ -1,0 +1,96 @@
+/**
+ * Clase principal que ejecuta la partida, elige el modo a jugar y la finaliza.
+ * @author joaquin
+ *
+ */
+public class Main{
+	public static void main(String[] args){
+		int i, modo;
+		Tablero tablero=new Tablero();
+		ControlFichas control=new ControlFichas();
+		Jugador1 usuario1=new Jugador1();
+		Jugador2 usuario2=new Jugador2();
+		PC pc=new PC();
+		String a="Bienvenidos a... ";
+		for(i=0;i<a.length();i++){
+			try{
+				Thread.sleep(250);
+			}catch (Exception e){
+			}
+			System.out.print(a.charAt(i));
+		}
+		System.out.println("\nL A S   D A M A S");
+		try{
+			Thread.sleep(500);
+		}catch (Exception e){
+		}
+		do{
+			modo=eleccionModo();
+			System.out.println("########################");
+			if(modo==3){
+				System.out.println("\n¡Adiós!");
+			}
+			else{
+				tablero=new Tablero();
+				while(control.contarFichas(tablero, Propietario.JUGADOR)>0 && control.contarFichas(tablero, Propietario.OPONENTE)>0){
+					usuario1.elegirOpcion(tablero);
+					if(modo==1 && control.contarFichas(tablero, Propietario.OPONENTE)>0){
+						usuario2.elegirOpcion(tablero);
+					}
+					if(modo==2 && control.contarFichas(tablero, Propietario.OPONENTE)>0){
+						pc.elegirOpcion(tablero);
+					}
+				}
+				finalizarPartida(tablero, control, modo);
+			}
+		}while(modo!=3);
+		
+	}
+	
+	/**
+	 * Elige si jugar contra el PC o contra un segundo jugador.
+	 * @return modo en el que se juega
+	 */
+	public static int eleccionModo(){
+		int modo=0;
+		System.out.println("\n########################");
+		System.out.println("MODO DE JUEGO");
+		System.out.print("1> vs ");
+		System.out.print(Constantes.ANSI_PCBLANCA+"USUARIO"+Constantes.ANSI_RESET);
+		System.out.print("\n2> vs ");
+		System.out.print(Constantes.ANSI_PCBLANCA+"PC\n"+Constantes.ANSI_RESET);
+		System.out.println("3> Salir");
+		do{
+			System.out.print("Opción: ");
+			modo=Lectura.numeroInt();
+		}while(modo<=0 || modo>3);
+		return modo;
+	}
+	
+	/**
+	 * Finaliza la partida al quedarse algún jugador sin fichas y muestra al ganador.
+	 * @param tablero
+	 * @param control
+	 * @param modo
+	 */
+	public static void finalizarPartida(Tablero tablero, ControlFichas control, int modo){
+		System.out.println("\nFIN DEL JUEGO");
+		tablero.mostrarse();
+		System.out.println();
+		if(control.contarFichas(tablero, Propietario.JUGADOR)>0){
+			System.out.print("¡El ");
+			System.out.print(Constantes.ANSI_USUARIO1BLANCA+"USUARIO 1"+Constantes.ANSI_RESET);
+			System.out.println(" es el ganador!");
+		}
+		if(control.contarFichas(tablero, Propietario.OPONENTE)>0 && modo==1){
+			System.out.print("¡El ");
+			System.out.print(Constantes.ANSI_PCBLANCA+"USUARIO 2"+Constantes.ANSI_RESET);
+			System.out.println(" es el ganador!");
+		}
+		if(control.contarFichas(tablero, Propietario.OPONENTE)>0 && modo==2){
+			System.out.print("¡El ");
+			System.out.print(Constantes.ANSI_PCBLANCA+"PC"+Constantes.ANSI_RESET);
+			System.out.println(" es el ganador!");
+		}
+	}
+}

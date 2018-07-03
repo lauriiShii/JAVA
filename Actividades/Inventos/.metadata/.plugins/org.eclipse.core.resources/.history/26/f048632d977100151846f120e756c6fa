@@ -1,0 +1,51 @@
+import java.util.Scanner;
+
+
+public class Ejercicio05 {
+
+	/**Contar el número de apariciones de una cadena en otra cadena.*/
+	public static void main(String[] args) {
+		
+		/**VARIABLES*/
+		/**VARIABLES Y OBJETOS*/
+		Scanner teclado = new Scanner (System.in);
+		String cadena1, cadena2,resultado;
+		int cont=0,i;
+		
+		/**PEDIMOS DATOS*/
+		System.out.print("Introduce una cadena: ");
+		cadena1=teclado.nextLine();
+		
+		System.out.print("Qué contamos?: ");
+		cadena2=teclado.nextLine();
+		
+		teclado.close();
+		
+		/**CONTAMOS LAS RAPETICIONES DE cadena2*/
+		//PASAMOS A MINUSCULA
+		resultado = cadena1.toLowerCase();
+		
+		//RECORREMOS LA CADENA EN BUSCA DEL TEXTO DE LA cadena2
+		for (i = 0; i < resultado.length() - 1; i++) {
+			
+			//SI ENCONTRAMOS LA cadena2 EN LA cadena1
+			if (resultado.indexOf(cadena2, i) >= i) {
+				
+				// El contador de for pasa a ser esa posición.
+				// indexOF devuelve la ultima pos de la cadena2
+				i = resultado.indexOf(cadena2, i);
+				
+				//El contador de apariciones se incrementa
+				cont++;
+			}
+		}
+
+		//MOSTRAMOS RESULTADO
+		System.out.print("La cadena "+cadena2+" se repide dentro de \""+cadena2+"\" "+cont+"  veces");
+
+		
+		//
+
+	}
+
+}

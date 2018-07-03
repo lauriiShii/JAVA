@@ -1,0 +1,126 @@
+/**
+ * Clase que representa el tablero donde se juega.
+ * @author laura
+ *
+ */
+public class Tablero{
+	private Ficha fichas[];
+	
+	/**
+	 * Constructor de la clase.
+	 */
+	Tablero(){
+		fichas=new Ficha[24];
+		rellenarse();
+	}
+	
+	public Ficha[] getFichas(){
+		return fichas;
+	}
+	
+	/**
+	 * Introduce las fichas con sus posiciones iniciales en el tablero.
+	 */
+	private void rellenarse(){
+		fichas[0]=new FichaNegra(new Posicion(2,8),Propietario.OPONENTE); 
+		fichas[1]=new FichaNegra(new Posicion(4,8),Propietario.OPONENTE);
+		fichas[2]=new FichaNegra(new Posicion(6,8),Propietario.OPONENTE);
+		fichas[3]=new FichaNegra(new Posicion(8,8),Propietario.OPONENTE);
+		fichas[4]=new FichaNegra(new Posicion(1,7),Propietario.OPONENTE);
+		fichas[5]=new FichaNegra(new Posicion(3,7),Propietario.OPONENTE);
+		fichas[6]=new FichaNegra(new Posicion(5,7),Propietario.OPONENTE);
+		fichas[7]=new FichaNegra(new Posicion(7,7),Propietario.OPONENTE);
+		fichas[8]=new FichaNegra(new Posicion(2,6),Propietario.OPONENTE);
+		fichas[9]=new FichaNegra(new Posicion(4,6),Propietario.OPONENTE);
+		fichas[10]=new FichaNegra(new Posicion(6,6),Propietario.OPONENTE);
+		fichas[11]=new FichaNegra(new Posicion(8,6),Propietario.OPONENTE);	
+		fichas[12]=new FichaBlanca(new Posicion(1,3),Propietario.JUGADOR);
+		fichas[13]=new FichaBlanca(new Posicion(3,3),Propietario.JUGADOR);
+		fichas[14]=new FichaBlanca(new Posicion(5,3),Propietario.JUGADOR);
+		fichas[15]=new FichaBlanca(new Posicion(7,3),Propietario.JUGADOR);
+		fichas[16]=new FichaBlanca(new Posicion(2,2),Propietario.JUGADOR);
+		fichas[17]=new FichaBlanca(new Posicion(4,2),Propietario.JUGADOR);
+		fichas[18]=new FichaBlanca(new Posicion(6,2),Propietario.JUGADOR);
+		fichas[19]=new FichaBlanca(new Posicion(8,2),Propietario.JUGADOR);
+		fichas[20]=new FichaBlanca(new Posicion(1,1),Propietario.JUGADOR);
+		fichas[21]=new FichaBlanca(new Posicion(3,1),Propietario.JUGADOR);
+		fichas[22]=new FichaBlanca(new Posicion(5,1),Propietario.JUGADOR);
+		fichas[23]=new FichaBlanca(new Posicion(7,1),Propietario.JUGADOR);
+	}
+	
+	/**
+	 * Imprime el tablero por pantalla.
+	 */
+	public void mostrarse(){
+		int i, j, k, numero=8;
+		boolean exito=false;
+		//FILA
+		for (i=Constantes.TAMANIO_TABLERO;i>0;i--){
+			System.out.print(numero+" ");
+			//COLUMNA
+			for (j=1;j<Constantes.TAMANIO_TABLERO+1;j++){
+				exito=false;
+				//POSICIONAMOS FICHAS
+				for (k=0;k<24;k++){
+					if(fichas[k]!=null && fichas[k].getPosicion().getX()==j && fichas[k].getPosicion().getY()==i){
+						if(fichas[k].getPropietario()==Propietario.OPONENTE)
+							System.out.print(Constantes.ANSI_PCNEGRA+fichas[k]+Constantes.ANSI_RESET);
+						else
+							System.out.print(Constantes.ANSI_USUARIO1NEGRA+fichas[k]+Constantes.ANSI_RESET);
+						
+						exito=true;
+					} 
+				}
+				//CASILLAS VACIAS
+				if (!exito) {
+					System.out.print(Constantes.ANSI_PCNEGRA+"  "+Constantes.ANSI_RESET);
+				}
+			}
+			System.out.println();
+			numero--;
+		}
+		System.out.println("   a b c d e f g h");
+	}
+	
+	/**
+	 * Comprueba si en una determinada posición hay una ficha de un propietario.
+	 * @param x
+	 * @param y
+	 * @param propietario
+	 * @return éxito de la comprobación
+	 */
+	public boolean hayFichaPropietario(int x, int y, Propietario propietario){
+		boolean exito=false;
+		int i, control=0;
+		for(i=0;i<fichas.length;i++){
+			if(fichas[i]!=null && fichas[i].getPosicion().getX()==x && fichas[i].getPosicion().getY()==y && fichas[i].getPropietario()==propietario){
+				control++;
+			}
+		}
+		if(control>0){
+			exito=true;
+		}
+		return exito;
+	}
+	
+	/**
+	 * Comprueba si en una determinada posición hay una ficha.
+	 * @param x
+	 * @param y
+	 * @return éxito de la comprobación
+	 */
+	public boolean hayFicha(int x, int y){
+		boolean exito=false;
+		int i, control=0;
+		for(i=0;i<fichas.length;i++){
+			if(fichas[i]!=null && fichas[i].getPosicion().getX()==x && fichas[i].getPosicion().getY()==y){
+				control++;
+			}
+		}
+		if(control>0){
+			exito=true;
+		}
+		return exito;
+	}
+	
+}

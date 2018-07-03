@@ -1,0 +1,12 @@
+
+public class Ejercicio15 {
+
+	/**Hacer una calculadora sencilla, es decir, que sume, reste, multiplique o divida dos números
+enteros introducidos por teclado. El programa tendrá un menú para que el usuario pueda
+hacer varias operaciones hasta que quiera salir.*/
+	public static void main(String[] args) {
+
+
+	}
+
+}

@@ -1,0 +1,28 @@
+
+public class Ejercicio10 {
+	
+	/**
+	 * Saca por consola el siguiente resultado utilizando System.out.printf, sin
+	 * utilizar espacios en la cadena de formato y utilizando solamente las
+	 * siguientes variables en los argumentos:
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		int x=10;
+		int y=-10;
+		float n=13.269834f;
+		String cad="Ana";
+		
+		//System.out.printf("%d",x);
+		//System.out.printf("+%.0d",x);
+		//System.out.printf("%.0f",y);
+		System.out.printf("%.2f%n",n);
+		System.out.printf("%+10.4f%n",n);
+		System.out.printf("%10.4f%n",n);
+		System.out.printf("%+010.3f%n",n);
+		System.out.printf("n=%.2f%5x=",n,x);
+		System.out.printf("%n%10s%s%5s ",cad, cad, cad);
+	}
+
+}

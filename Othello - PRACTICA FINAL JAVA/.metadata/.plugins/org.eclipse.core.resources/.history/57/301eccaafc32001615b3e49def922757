@@ -1,0 +1,49 @@
+package Othello;
+
+import java.util.ArrayList;
+
+/**
+ * @author Laura Calvente
+ * Clase que implementa la interfaz Jugador, ya que hara el rol de oponente en una partida.
+ * La IA al igual que el resto de jugadores tendra una ficha de un color para toda la partida.
+ */
+public class IA extends Jugador{
+
+	
+	/**
+	 * @param tablero
+	 * Busca un movimiento posible.
+	 */
+	public void jugar(Tablero tablero) {
+		
+		int i, cantVolteada = 0;
+		Casilla ficha = null;
+		Tablero t = new Tablero();
+		ArrayList <Casilla> volteables = new ArrayList <Casilla>();
+
+		// GUARDAMOS EN UNA LISTA TODAS LAS POSICIONES EN LAS QUE LA IA PUEDE PONER UNA FICHA
+		volteables.addAll(tablero.comprobarVolteable(color));
+		
+
+		// MIRAMOS TODAS LAS POSIBLES POSICIONES
+		for(i=0; i < volteables.size(); i++){
+			
+			// PARA HACER LAS COMPROBACIONES USAMOS UN CLON DEL TABLERO ORIGINAL
+			t = (Tablero) tablero.clone();
+			ficha = new Casilla();
+			ficha.colorFicha=color;
+			
+			// CLONAMOS LA PSOSIBLE POSICION PARA LA JUGADA EN CUESTION
+			ficha.posicion = (Posicion)volteables.get(i).posicion.clone();
+			
+			// REALIZAMOS LA JUGADA EN EL TABLERO CLONADO
+			t.posicionValida(ficha);
+		}
+		
+		// SI LA JUGADA RESULTA SER LA MEJOR AL FINALIZAR EL FOR SERA LA JUGADA QUE SE EJECUTE
+		if (t.contadorFicha(color) > cantVolteada )  {
+			cantVolteada = t.contadorFicha(color);
+			tablero.posicionValida(ficha);
+			}
+	}
+}

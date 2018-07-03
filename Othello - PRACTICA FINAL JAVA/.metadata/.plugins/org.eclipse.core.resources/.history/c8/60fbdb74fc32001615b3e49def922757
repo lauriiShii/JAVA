@@ -1,0 +1,127 @@
+package Othello;
+
+import Teclado.Rango;
+import Teclado.Teclado;
+
+/**
+ * @author Laura Calvente 
+ * Esta clase implementa la interfaz partida.
+ * Esta en concreto desarrolla la partida con otra persona humana.
+ *
+ */
+public class PartidaJugador extends Partida{
+
+	Tablero tablero = new Tablero();
+	Persona Jugador1 = new Persona();
+	Jugador2 Jugador2 = new Jugador2();
+	
+	/**
+	 * Constructor que llama directamente a empezarPartida, asi cuando se cree la partida empieza directamente.
+	 */
+	PartidaJugador (){
+		empezarPartida();
+	}
+
+	/**
+	 * El metodo empezarPartida cra un tablero, añade las posiciones, las fichas 
+	 * iniciales y lleva el control de los turnos.
+	 */
+	public void empezarPartida() {
+		int opcion;
+		
+		//MOSTRAMOS TABLERO
+		tablero.mostrar();
+
+		// EL USUARIO DECIDE CON QUE COLOR JUEGA
+		opcion = Teclado.numeroInt("Elige que color deseas ser: \n\n\t1.Blancas \n\t2.Negras", 1, 2,
+				Rango.INCLUIDO_MIN_MAX);
+
+		if (opcion == 1) {
+			Persona.color = Ficha.BLANCA;
+			Persona.color = Ficha.NEGRA;
+		} else {
+			Persona.color = Ficha.NEGRA;
+			Persona.color = Ficha.BLANCA;
+		}
+
+		do {
+			// SI EL JUGADOR 1 ELIGIO BLANCO, JUGADOR 2 QUE ES NEGRA JUEGA PRIMERO PRIMERO
+			if (Jugador.color == Ficha.BLANCA) {
+				
+				// SI NO SE PUEDE VOLTEAR MAS FICHAS DEL OPONENTE SE DA FIN DE PARTIDA
+				if (tablero.comprobarVolteable(Persona.color).size() == 0){
+					ganador();
+				}
+				
+				//SINO, SE EJECUTA TURNO DE JUGADOR 2
+				else {
+					System.out.println(Constantes.MORADO+"Turno de las negras:"+Constantes.RESET);
+					Persona.jugar(tablero);
+					tablero.mostrar();
+				}
+
+				// SI DESPUES DEL TURNO DE JUGADOR 2, EL JUGADOR 1 NO TIENE FICHAS VOLTEABLES DEL OPONENTE SE DA FIN DE PARTIDA
+				if (tablero.comprobarVolteable(Jugador1.color).size() == 0){
+					ganador();
+				}
+				
+				//SINO, SE EJECUTA TURNO DEL JUGADOR 1
+				else {
+					System.out.println(Constantes.MORADO+"Turno de las blancas:"+Constantes.RESET);
+					Jugador1.jugar(tablero);
+					tablero.mostrar();
+				}
+			}
+
+			// SI EL JUGADOR 1 ESCOGIO NEGRO, JUEGA EL PRIMERO
+			else {
+				// SI EL JUGADOR NO TIENE FICHAS VOLTEABLES DEL OPONENTE SE DA FIN DE PARTIDA
+				if (tablero.comprobarVolteable(Jugador1.color).size() == 0){
+					ganador();
+				}
+				//SINO, SE EJECUTA TURNO DEL JUGADOR
+				else {
+					System.out.println(Constantes.MORADO+"Turno de las negras:"+Constantes.RESET);
+					Jugador1.jugar(tablero);
+					tablero.mostrar();
+				}
+				
+				// SI DESPUES DEL TURNO DEL JUGADOR 1, JUGADOR 2 NO TIENE FICHAS VOLTEABLES DEL OPONENTE SE DA FIN DE PARTIDA
+				if (tablero.comprobarVolteable(Jugador2.color).size() == 0){
+					ganador();
+				}
+				
+				//SINO, SE EJECUTA TURNO DE JUGADOR 2
+				else {
+					System.out.println(Constantes.MORADO+"Turno de las blancas:"+Constantes.RESET);
+					Jugador2.jugar(tablero);
+					tablero.mostrar();
+				}
+			}
+		// MIENTRAS HAYA FICHAS VOLTEABLES LA PARTIDA CONTINUA
+		} while ((tablero.comprobarVolteable(Jugador2.color).size() > 0 || tablero.comprobarVolteable(Jugador1.color).size() > 0));
+
+	}
+
+	/**
+	 * Metodo que cuenta las fichas blancas y negras, a partir de ahi establece quien gana o si quedan empate.
+	 */
+	public void ganador() {
+		
+		//SI EL RECUENTO DE BLANCAS Y NEGRAS ES IGUAL SE DA EMPATE
+		if (tablero.contadorFicha(Ficha.BLANCA) == tablero.contadorFicha(Ficha.NEGRA))
+			System.out.println(
+					Constantes.MORADO+"\t!!Ohhhh ... Nos encontramos ante un empate¡¡\n\tFIN DE LA PARTIDA\n\t   (Os espero para una revancha :D)"+Constantes.RESET);
+			
+		//SI EL RECUENTO DE NEGRAS ES MENOR QUE EL DE BLANCAS, GANAN LAS BLANCAS
+		else if (tablero.contadorFicha(Ficha.BLANCA) > tablero.contadorFicha(Ficha.NEGRA))
+			System.out.println(
+					Constantes.MORADO+"\t¡¡Ganan las fichas blancas!!\n\tFIN DE LA PARTIDA\n\t   (En hora buena jugador de fichas blancas.)"+Constantes.RESET);
+		
+		//SI EL RECUENTO DE BLANCAS ES MENOR QUE EL DE NEGRAS, GANAN LAS BLANCAS
+		else if (tablero.contadorFicha(Ficha.BLANCA) < tablero.contadorFicha(Ficha.NEGRA))
+			System.out.println(
+					Constantes.MORADO+"\t¡¡Ganan las fichas negras!!\n\tFIN DE LA PARTIDA\n\t   (En hora buena jugador de fichas negras.)"+Constantes.RESET);
+
+	}
+}

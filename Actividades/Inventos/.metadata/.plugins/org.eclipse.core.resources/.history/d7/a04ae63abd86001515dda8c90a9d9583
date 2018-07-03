@@ -1,0 +1,5 @@
+package BoletinFunciones;
+
+public enum rango {
+
+}

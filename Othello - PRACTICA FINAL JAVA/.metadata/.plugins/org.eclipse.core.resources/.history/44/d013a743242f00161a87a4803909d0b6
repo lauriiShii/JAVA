@@ -1,0 +1,95 @@
+/**
+ * Clase para representar al jugador PC.
+ * @author joaquin
+ *
+ */
+public class Computadora extends Jugador{
+	public void realizarJugada(Tablero tablero){
+		int i, multiple=0, eliminadas=0;
+		Posicion posicion1=new Posicion(0,0), posicion2=new Posicion(0,0);
+		Ficha[] fichas;
+		boolean comer=false;
+		FichaNegra ficha=new FichaNegra(posicion1, Propietario.OPONENTE);
+		ControlFichas control=new ControlFichas();
+		IA oponente=new IA();
+		System.out.print("\nTURNO DEL ");
+		System.out.print(Constantes.ANSI_PCBLANCA+"PC\n"+Constantes.ANSI_RESET);
+		tablero.mostrarse();
+		System.out.print("Déjame pensar");
+		for(i=0;i<3;i++){
+			try{
+				Thread.sleep(800);
+			}catch (Exception e){
+			}
+			System.out.print(".");
+		}
+		try{
+			Thread.sleep(600);
+		}catch (Exception e){
+		}
+		System.out.println();
+		if(oponente.elegirFichaConCriterio(tablero).getX()==1 && oponente.elegirFichaConCriterio(tablero).getY()==2){
+			rendirse(tablero);
+		}
+		else{
+			do{
+				comer=false;
+				if(multiple==0){
+					posicion1=oponente.elegirFichaConCriterio(tablero);
+					ficha.setPosicion(posicion1);
+					fichas=control.fichasSeleccionables(tablero, Propietario.OPONENTE);
+				}
+				for(i=0;i<tablero.getFichas().length;i++){
+					if(tablero.getFichas()[i]!=null && tablero.getFichas()[i].getPosicion().equals(ficha.getPosicion())){
+						if(tablero.getFichas()[i].isDama()) ficha.setDama(true);
+					}
+				}
+				posicion2=oponente.elegirMovimiento(tablero, ficha);
+				eliminadas=tablero.limpiarse(ficha.getPosicion(), posicion2);
+				for(i=0;i<tablero.getFichas().length;i++){
+					if(tablero.getFichas()[i]!=null && tablero.getFichas()[i].equals(ficha)){
+						tablero.getFichas()[i].moverse(posicion2);
+					}
+				}
+				multiple=0;
+				ficha.setPosicion(posicion2);
+				fichas=control.fichasSeleccionables(tablero, Propietario.OPONENTE);
+				for(i=0;i<fichas.length;i++){
+					if(fichas[i]!=null && fichas[i].getPosicion().equals(ficha.getPosicion())){
+						multiple++;
+					}
+				}	
+				if(!ficha.isDama()&& ficha.puedeComer(tablero)) comer=true;
+				if(ficha.isDama()&& ficha.puedeComerDama(tablero)) comer=true;
+			}while(eliminadas>0 && comer);
+		}
+	}
+	
+	public void rendirse(Tablero tablero){
+		int i=0;
+		for(i=0;i<tablero.getFichas().length;i++){
+			if(tablero.getFichas()[i]!=null && tablero.getFichas()[i].getPropietario()==Propietario.OPONENTE){
+				tablero.getFichas()[i]=null;
+			}
+		}
+		System.out.print("¡El ");
+		System.out.print(Constantes.ANSI_PCBLANCA+"PC"+Constantes.ANSI_RESET);
+		System.out.println(" no puede mover ninguna ficha...");
+	}
+	
+	public void elegirOpcion(Tablero tablero){
+		int i=0, contador=0;
+		ControlFichas control=new ControlFichas();
+		for(i=0;i<control.fichasSeleccionables(tablero, Propietario.OPONENTE).length;i++){
+			if(control.fichasSeleccionables(tablero, Propietario.OPONENTE)[i]!=null){
+				contador++;
+			}
+		}
+		if(contador==0){
+			rendirse(tablero);
+		}
+		else{
+			realizarJugada(tablero);
+		}
+	}
+}

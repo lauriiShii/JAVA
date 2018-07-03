@@ -1,0 +1,27 @@
+package Othello;
+
+public class Pruebas {
+
+	public static void main(String[] args) {
+
+		abecedario(Constantes.TAMANIO_TABLERO);
+
+	}
+
+	public static void abecedario(int num) {
+
+		char[] abecedario;
+		abecedario = new char[num];
+
+		if (num > 26)
+			System.out.println("Un abecedario no tendrá más de 26 caracteres.");
+		else
+			for (int i = 0; i < num; i++) {
+				abecedario[i] = (char) ('A' + i);
+				if (i == num-1)
+					System.out.print(abecedario[i]);
+				else
+					System.out.print(abecedario[i]+"  ");
+			}
+	}
+}

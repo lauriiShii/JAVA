@@ -1,0 +1,31 @@
+package Othello;
+
+import Teclado.Rango;
+import Teclado.Teclado;
+
+public class Jugador {
+	
+	static Ficha color;
+	Casilla ficha = new Casilla();
+	
+	/**
+	 * @param tablero
+	 * pide la posicion al usuario donde quiere posicionar la ficha.
+	 * Comprueba que la posicion sea valida sino la vuelve a pedir.
+	 */
+	public void jugar (Tablero tablero){
+		
+		ficha.colorFicha=color;
+		
+		//SI HAY MOVIMIENTOS POSIBLES SE PIDE POSICION
+		if(tablero.comprobarVolteable(color).size()!=0){
+			do{
+				ficha.posicion.fila=Teclado.numeroInt("\tIntroduce fila:",1,8,Rango.INCLUIDO_MIN_MAX)-1;
+				ficha.posicion.columna=Teclado.numeroInt("\tIntroduce Columna:",1,8,Rango.INCLUIDO_MIN_MAX)-1;
+			}while(!tablero.posicionValida(ficha));
+		//SINO INFORMAMOS QUE NO PUEDE REALIZAR MAS MOVIMIENTOS.
+		}else
+			System.out.println("No tienes movimientos posibles");
+	}
+
+}

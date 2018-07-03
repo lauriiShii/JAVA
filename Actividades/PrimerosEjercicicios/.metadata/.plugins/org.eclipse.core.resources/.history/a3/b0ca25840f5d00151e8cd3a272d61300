@@ -1,0 +1,53 @@
+import java.math.*;
+
+public class Ejercicio02 {
+	/**
+	 * Calcula el resultado de las siguientes expresiones
+	 * */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		double a,b,c,d,g,h,i,j,l,potencia;
+		boolean k,e,f;
+		
+		a= (3*5)-(4%2);
+		System.out.println("a) 3 * 5 – 4 / 2 = "+a);
+		
+		potencia = Math.pow((4*5),2);
+		b= 3-(potencia%4);
+		System.out.println("b) 3 – (4 * 5)^2 / 4 = "+b);
+		
+		c= (3*3)-(5*2);
+		System.out.println("c) 3^2 – 5 * 2 ="+c);
+		
+		d= 7-(4*2)-(5*2);
+		System.out.println("d) 7 – 4 * 2 – 5 * 2 = "+d);
+		
+		e= 5+4<7+8;
+		System.out.println("e) 5 + 4 < 7 + 8 = "+e);
+		
+		
+		f= 4<((5*4)%2)-7;
+		System.out.println("f) 4 < 5 * 4 / 2 – 7 = "+f);
+		
+		g= 3+(6*14);
+		System.out.println("g) 3 + 6 * 14 = "+g);
+		
+		h= 8+(7*3)+(4*6);
+		System.out.println("h) 8 + 7 * 3 + 4 * 6 = "+h);
+		
+		potencia= Math.pow(2,3);
+		i= (-4*7)+(potencia%4)-5;
+		System.out.println("i) - 4 * 7 + 2^3 / 4 – 5 = "+ i);
+		
+		j= 12+(3*7)+(5*4);
+		System.out.println("j) 12 + 3 * 7 + 5 * 4 = "+j);
+		
+		k= !(4 > 6);
+		System.out.println("k) ! (4 > 6) ="+k);
+		
+		potencia= Math.pow(7,3);
+		l= potencia%2+6;
+	}
+
+}

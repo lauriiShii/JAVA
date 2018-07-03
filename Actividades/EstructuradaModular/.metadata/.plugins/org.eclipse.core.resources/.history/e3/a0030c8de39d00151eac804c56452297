@@ -1,0 +1,26 @@
+package Boletin;
+
+public class Ejercicio19 {
+	/**Realiza un programa que lea por teclado una cadena de caracteres y guarde en un array las
+	palabras que componen dicha cadena (una palabra en cada posición del array). Por último,
+	mostrar por pantalla el contenido de dicho array mostrando cada palabra en una línea
+	distinta. No usar el método split.
+	Hacer dos versiones:
+	• Las palabras están separadas por un espacio
+	• Las palabras pueden estar separadas por más de un espacio.*/
+	public static void main(String[] args) {
+
+		/**DECLARAMOS VARIABLES Y OBJETOS*/
+		String cadena, palabras [];
+		
+		/**PEDIMOS DATO A USUARIO*/
+		
+		/**GUARDAMOS PALABRAS EN palabras []*/
+		//RECORREMOS LA CADENA EN BUSCA DE ESPACIOS
+		//CUANDO SE ENCUENTRE UN ESPACIO HA FINALIZADO UNA PALABRA
+		
+		/**MOSTRAMOS DATOS DE palabras []*/
+
+	}
+
+}

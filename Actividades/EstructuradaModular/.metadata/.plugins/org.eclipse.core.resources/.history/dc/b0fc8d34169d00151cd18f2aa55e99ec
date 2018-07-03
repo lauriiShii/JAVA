@@ -1,0 +1,53 @@
+package Boletin;
+
+import Teclado.Teclado;
+
+public class Ejercicio16 {
+	/**Escribe un programa que inicialice una matriz de NxN desde teclado y que diga si existe
+	alguna fila exactamente igual a alguna columna, junto con los índices de las filas y columnas
+	que son iguales.*/
+	public static void main(String[] args) {
+		
+	/**DECLARAMOS VARIABLES Y OBJETOS*/
+	int datos [][], tamaño,i ,j, k, l, n, m, o, fila [], columna [] ;
+	
+	/**PEDIMOS DATOS AL USUARIO*/
+	//TAMAÑOS
+	tamaño = Teclado.numeroInt("Introduce el numero de filas y columnas para la matriz: ");
+	//Damos tamaño a datos y los arrays de ayuda
+	datos = new int [tamaño][tamaño];
+	fila = new int [tamaño];
+	columna = new int [tamaño];
+	
+	//DATOS
+	for(i=0; i < datos.length; i++)
+		for(j=0; j < datos[i].length; j++)
+			datos [i][j] = Teclado.numeroInt("Fila "+i+" y columna "+j+" : ");
+	
+	/**MOSTRAMOS MATRIZ*/
+	System.out.println("\nMATRIZ INTRODUCIDA");
+	for (m = 0; m < datos.length; m++) {
+		for (o = 0; o < datos[m].length; o++) {
+			System.out.print(datos [m][o]+"\t");
+		}
+		System.out.println("");
+	}
+	
+	/**BUSCAMOS FILA QUE SEA IGUAL A COLUMNA*/
+	for ( k = 0; k < datos.length; k++){
+		for( l = 0; l < datos[k].length; l++){
+			// ALMACENAMOS FILA EN UN ARRAY
+			fila[l] = datos[k][l] ;
+			//ALMACENAMOS COLUMANA EN UN ARRAY
+			//columna [l] = datos [l][k];
+		}
+		System.out.print(fila [k]);
+		//System.out.println("");
+		//System.out.println(columna [k]);
+	}
+	// ALMACENAMOS FILA EN UN ARRAY
+	// ALMACENAMOS COLUMNA EN UN ARRAY
+	// COMPARAMOS ARRAYS DE FILA Y COMUNA
+	}
+
+}

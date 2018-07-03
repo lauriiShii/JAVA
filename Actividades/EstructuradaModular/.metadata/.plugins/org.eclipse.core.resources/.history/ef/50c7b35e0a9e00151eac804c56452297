@@ -1,0 +1,25 @@
+package Boletin;
+import java.util.Random;
+
+import Teclado.Teclado;
+
+public class Ejercicio21 {
+	/**ADIVINANZA*/
+	public static void main(String[] args) {
+		
+		/**DECLARACION VARIABLES Y OBJETOS*/
+		Random rnd = new Random();
+		int tipoAle=rnd.nextInt(3+1), numeroAle=rnd.nextInt(9+1), vocalAle=rnd.nextInt(5+1), consonanteAle=rnd.nextInt(19+1);
+		char vocal [] = {'a','e','i','o','u'}, consonante [] = {'b','c','d','f','g','h','j','k','l','m','n','p','q','t','v','w','x','y','z'}, comenzar;
+		String tipo [] = {"Un numero del 0 al 9", "Una vocal minuscula", "Una vocal minuscula"};
+		
+		/**INTRODUCION*/
+		comenzar = Teclado.caracter
+				("Hola amigo !!! He pensado que podemos jugar a un juego.\n Tú piensas en una letra o número de un digito y yo tengo que adivinarlo :)\nPiensalo y cuando estes listo pulsa cualquier tecla.");
+		
+		
+		
+
+	}
+
+}

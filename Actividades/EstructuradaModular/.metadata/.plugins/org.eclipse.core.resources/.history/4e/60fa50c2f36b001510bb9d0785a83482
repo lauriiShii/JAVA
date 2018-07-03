@@ -1,0 +1,13 @@
+
+public class Ejercicio06 {
+	
+	/**Realizar un programa que dados tres números, los devuelva en orden ascendente.*/
+	public static void main(String[] args) {
+
+		/**VARIABLES*/
+		int num1 = 8, num2 = 1, num = -3;
+		
+
+	}
+
+}

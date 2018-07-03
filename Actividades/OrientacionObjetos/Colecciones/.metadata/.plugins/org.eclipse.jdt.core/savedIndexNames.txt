@@ -1,0 +1,16 @@
+INDEX VERSION 1.127+F:\Programacion\Actividades Eclipse\OrientacionObjetos\Colecciones\.metadata\.plugins\org.eclipse.jdt.core
+312514451.index
+3581857394.index
+323040845.index
+2293779891.index
+1264783929.index
+2712786868.index
+2573636358.index
+3459696625.index
+1282908104.index
+1357118451.index
+1632630630.index
+3027403005.index
+1163142192.index
+3988809591.index
+2682854565.index

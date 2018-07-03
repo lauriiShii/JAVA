@@ -1,0 +1,24 @@
+/**
+ * Clase que representa a un jugador genérico.
+ * @author joaquin
+ *
+ */
+public abstract class Jugador{
+	/**
+	 * Mueve una ficha incluso varias veces si hace un combo.
+	 * @param tablero
+	 */
+	public abstract void realizarJugada(Tablero tablero);
+	
+	/**
+	 * Se rinde si no puede mover ninguna ficha.
+	 * @param tablero
+	 */
+	public abstract void rendirse(Tablero tablero);
+	
+	/**
+	 * Elige si debe rendirse o realizar una jugada.
+	 * @param tablero
+	 */
+	public abstract void elegirOpcion(Tablero tablero);
+}

@@ -1,0 +1,23 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+public class Numeros {
+
+	public static void main(String[] args) throws IOException {
+		
+		/**VARIABLES Y OBJETOS*/
+		String num1 = "G:/Sonidos/uno.wav";
+		InputStream numero1 = new FileInputStream(num1);
+		AudioStream Sonido1 = new AudioStream(numero1);
+
+		/**REPRODUCIOMOS EL NUMERO 1 */
+			AudioPlayer.player.start(Sonido1);
+			System.out.println("Uno!!");
+
+		}
+	
+}

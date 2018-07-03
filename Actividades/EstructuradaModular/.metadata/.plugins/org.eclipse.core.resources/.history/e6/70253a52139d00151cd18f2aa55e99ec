@@ -1,0 +1,31 @@
+package Boletin;
+
+import Teclado.Teclado;
+
+public class Ejercicio16 {
+	/**Escribe un programa que inicialice una matriz de NxN desde teclado y que diga si existe
+	alguna fila exactamente igual a alguna columna, junto con los índices de las filas y columnas
+	que son iguales.*/
+	public static void main(String[] args) {
+		
+	/**DECLARAMOS VARIABLES Y OBJETOS*/
+	int datos [][], tamaño,i ,j ;
+	
+	/**PEDIMOS DATOS AL USUARIO*/
+	//TAMAÑOS
+	tamaño = Teclado.numeroInt("Introduce el numero de filas y columnas para la matriz: ");
+	//Damos tamaño a datos
+	datos = new int [tamaño][tamaño];
+	
+	//DATOS
+	for(i=0; i < datos.length; i++)
+		for(j=0; j < datos[0].length; j++)
+			datos [i][j] = Teclado.numeroInt("Fila "+i+" y columna "+j+" : ");
+	
+	/**BUSCAMOS FILA QUE SEA IGUAL A COLUMNA*/
+	// ALMACENAMOS FILA EN UN ARRAY
+	// ALMACENAMOS COLUMNA EN UN ARRAY
+	// COMPARAMOS ARRAYS DE FILA Y COMUNA
+	}
+
+}

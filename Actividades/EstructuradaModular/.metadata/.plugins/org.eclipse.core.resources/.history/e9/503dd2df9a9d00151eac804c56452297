@@ -1,0 +1,51 @@
+package Boletin;
+
+public class Ejercicio17 {
+	/**
+	 * Ordenar un array unidimensional según el método de la burbuja. Consiste
+	 * en comparar pares de elementos adyacentes en un array y si están
+	 * desordenados intercambiarlos hasta que estén todos ordenados. Este método
+	 * consiste en ordenar el array moviendo el mayor hasta la última casilla
+	 * comparando e intercambiando los números comenzando desde la casilla cero
+	 * hasta situarlo en la última posición. Una vez situado el más grande, se
+	 * procede a encontrar y situar el siguiente más grande comparando e
+	 * intercambiando de nuevo los números desde el inicio del array, y así
+	 * sigue sucesivamente hasta ordenar todos los elementos del array.
+	 */
+	public static void main(String[] args) {
+
+		/** DECLARACION DE VARIABLES Y OBJETOS */
+		int datos[] = { 50, 26, 7, 9, 15, 27 }, j, k, l, i, numMayor=0, numSiguientePos, posNumMayor=0;
+		
+		/**TRABAJAMOS CADA DATO*/
+		for (i = 0; i < datos.length; i++) {
+			
+			//BUSCAMOS numMayor
+			for (j = 0; j < datos.length-i; j++) {
+				numMayor = 0;
+				if (datos [j] > numMayor){
+					//Tenemos nuevo numero mayor
+					numMayor = datos [j];
+					//guardamos la posicion
+					posNumMayor = j;
+				}
+			}
+			//NUESTRO NUMERO MAYOR PREGUNTA AL SIGUIENTE DATO SI ES MENOR PARA MOVERSE A LA DERECHA
+			for ( k = posNumMayor; k < datos.length-1; k++) {
+				if(datos[k] > datos[k+1]){
+					numSiguientePos = datos [k+1];
+					datos[k+1] = numMayor;
+					datos[k] = numSiguientePos;
+				}
+				else
+					System.out.println("Fin Movimiento "+(i+1));
+				
+				//MOSTRAMOS MOVIMIENTO
+				for (l = 0; l < datos.length; l++)
+					System.out.print(datos[l]+" ");
+				System.out.println(" ");
+			}
+		}
+	}
+
+}

@@ -1,0 +1,19 @@
+public class Ejercicio05 {
+	/**
+	 * Dados los siguientes valores de las variables x, y, j y k, añadir los
+	 * paréntesis que sean necesarios para que las expresiones que las siguen
+	 * evalúen a verdadero: x = 10; y = 19; j = true; k = false
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		boolean a,b,c,d,j=true,k=false;
+		int x=10, y=19;
+		
+		a = x ==y || j;
+		System.out.println("");
+		b = x >= y || x <= y && j;
+		c =! j || j;
+		d = ! k && k;
+	}
+}

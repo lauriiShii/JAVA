@@ -1,0 +1,16 @@
+package Othello;
+
+import Teclado.*;
+
+/**
+ * @author Laura Calvente 
+ * Implememnta la interfaz jugador ya que es el rol del jugador.
+ * Tiene un color de ficha que sera el mismo en toda la partida y 
+ * la casilla que es la ficha que posiciona en cada movimiento.
+ */
+public class Persona extends Jugador{
+
+	
+	
+
+}

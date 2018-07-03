@@ -1,0 +1,11 @@
+package BoletinRecursividad;
+
+public class Ejercicio07 {
+	/**Escribe un programa que calcule el factorial de un número entero positivo que se introduce por
+teclado.*/
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

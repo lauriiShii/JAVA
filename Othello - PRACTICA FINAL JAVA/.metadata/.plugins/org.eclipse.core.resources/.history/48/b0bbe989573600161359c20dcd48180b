@@ -1,0 +1,345 @@
+package Othello;
+
+import java.util.ArrayList;
+
+/**
+ * @author Laura Calvente
+ * Nuestro tablero se compone de casillas, estas casillas pueden ser de diferentes colores, en funcion de su color
+ * estan vacias, son ocupadas por una "ficha ficticia" negra o blanca.
+ */
+public class Tablero implements Cloneable {
+	
+	Casilla tablero[][] = new Casilla[Constantes.TAMANIO_TABLERO][Constantes.TAMANIO_TABLERO];
+	
+	/**
+	 * Constructor que ejecuta el metodo crear
+	 * */
+	Tablero (){
+		crear();
+	}
+	
+	/**
+	 * Clon de tablero, es necesario para la IA
+	 * */
+	public Object clone() {
+		Tablero clonado;
+		int i, j;
+
+		try {
+			clonado = (Tablero) super.clone();
+
+			clonado.tablero = tablero.clone();
+			for (i = 0; i < clonado.tablero.length; i++) {
+				clonado.tablero[i] = tablero[i].clone();
+				for (j = 0; j < clonado.tablero[i].length; j++) {
+					clonado.tablero[i][j] = (Casilla) tablero[i][j].clone();
+				}
+			}
+		} catch (CloneNotSupportedException e) {
+			clonado = null;
+		}
+		return clonado;
+	}
+
+	/**
+	 * Crea las posiciones del tablero y las fichas iniciales
+	 */
+	public void crear() {
+		int i, j;
+
+		for (i = 0; i < tablero.length; i++)
+			for (j = 0; j < tablero[i].length; j++) {
+
+				// CREAMOS FICHAS
+				tablero[i][j] = new Casilla();
+				// ASIGNAMOS TODO COMO CASILLAS VACIAS
+				tablero[i][j].colorFicha = Ficha.NADA;
+				// CREAMOS POSICIONES
+				tablero[i][j].posicion.fila = i;
+				tablero[i][j].posicion.columna = j;
+			}
+
+		// METEMOS LAS 4 FICHAS INICIALES
+		tablero[3][3].colorFicha = Ficha.BLANCA;
+		tablero[3][4].colorFicha = Ficha.NEGRA;
+		tablero[4][4].colorFicha = Ficha.BLANCA;
+		tablero[4][3].colorFicha = Ficha.NEGRA;
+	}
+
+	/**
+	 * Muestra el tablero
+	 */
+	public void mostrar() {
+		
+		int i, j;
+
+		//MARCO SUPERIOR
+		System.out.print("\n\t" + Constantes.MARCO + "    ");
+		abecedario();
+		System.out.println("    " + Constantes.RESET);
+
+		//FILAS
+		for (i = 0; i < tablero.length; i++) {
+			//COLUMNAS
+			for (j = 0; j < tablero[i].length; j++) {
+				//MARCO IZQUIERDO
+				if (j == 0)
+					System.out.print("\t" + Constantes.MARCO + " " + (i + 1) + " " + Constantes.RESET);
+
+				//PONEMOS FICHAS
+				if (tablero[i][j].colorFicha == Ficha.NADA)
+					System.out.print(Constantes.NADA + "   " + Constantes.RESET);
+
+				else if (tablero[i][j].colorFicha == Ficha.NEGRA)
+					System.out.print(Constantes.FICHA_NEGRA + " " + Constantes.FICHA + " " + Constantes.RESET);
+				else
+					System.out.print(Constantes.FICHA_BLANCA + " " + Constantes.FICHA + " " + Constantes.RESET);
+
+				//MARCO DERECHO
+				if (j == 7)
+					System.out.print(Constantes.MARCO + " " + (i + 1) + " " + Constantes.RESET);
+			}
+			System.out.println();
+		}
+
+		//MARCO INFERIOR
+		System.out.print("\n\t" + Constantes.MARCO + "    ");
+		abecedario();
+		System.out.println("    " + Constantes.RESET);
+	}
+	
+	/**
+	 * @param color
+	 * Cuenta cuantas fichas de un color hay en el tablero
+	 */
+	public int contadorFicha(Ficha color) {
+		
+		int ficha = 0;
+		int i, j;
+
+		// SI CONTAMOS BLANCAS
+		if (color == Ficha.BLANCA) {
+			for (i = 0; i < Constantes.TAMANIO_TABLERO; i++)
+				for (j = 0; j < Constantes.TAMANIO_TABLERO; j++)
+					if (tablero[i][j].colorFicha == Ficha.BLANCA)
+						ficha++;
+			
+		// SI CONTAMOS NEGRAS
+		} else {
+			for (i = 0; i < Constantes.TAMANIO_TABLERO; i++)
+				for (j = 0; j < Constantes.TAMANIO_TABLERO; j++)
+					if (tablero[i][j].colorFicha == Ficha.NEGRA)
+						ficha++;
+		}
+		return ficha;
+	}
+
+	/**
+	 * @param ficha
+	 * @param limite
+	 * @param patron
+	 * Es el metodo que se encarga de voltear las fichas del oponente una vez posicionada nuestra ficha.
+	 * 
+	 * Este metodo es llamado por posicionValida una vez que ya se ha comprobado que la posicion donde se quiere
+	 * poner la ficha nueva es posible.
+	 * 
+	 * Este metodo es llamado varias veces por lo que los valores que recibe van cambiando.
+	 */
+	public void posicionarVoltear(Casilla ficha, Posicion limite, Posicion patron) {
+		
+		Posicion fichasAlrededor = new Posicion(ficha.posicion.fila, ficha.posicion.columna);
+		
+		// PRIMERO CAMBIAMOS EL COLOR DE LA FICHA QUE NOSOTROS HEMOS PUESTO
+		tablero[fichasAlrededor.fila][fichasAlrededor.columna].colorFicha = ficha.colorFicha;
+		
+		// MIENTRAS NO ESTEMOS EN LA POSICION LIMITE APLICAMOS EL PATEON PARA CAMBIAR DE COLOR LAS "FICHAS"
+		while (fichasAlrededor.fila != limite.fila || fichasAlrededor.columna != limite.columna) {
+			fichasAlrededor.fila += patron.fila;
+			fichasAlrededor.columna += patron.columna;
+			tablero[fichasAlrededor.fila][fichasAlrededor.columna].colorFicha = ficha.colorFicha;
+		}
+
+	}
+
+	/**
+	 * @param ficha
+	 * @return valido 
+	 * A partir de la ficha que le entra por parametro, el metodo, mira en su alrededor, en las 8 direcciones,
+	 * en busca de una ficha de color opuesto al suyo.
+	 * 
+	 * Cuando encuentra la ficha de opuesto color genera un patron con el que mira en la linea que forman las posiciones
+	 * de la ficha encontrada y la pasada por parametro, que es donde se quiere poner la nueva ficha.
+	 * 
+	 * Si no encuentra ninguna ficha del color de la ficha pasada el movimiento no es valido, si la encuentra
+	 * se ejecuta el movimiento, para ello se llama al metodo PosicionarVoltear.
+	 */
+	public boolean posicionValida(Casilla ficha) {
+
+		Posicion fichasAlrededor = new Posicion();
+		Posicion patron = new Posicion();
+		boolean seguir = true, valido = false;
+		int i, j, cont = 0;
+
+		if (tablero[ficha.posicion.fila][ficha.posicion.columna].colorFicha != Ficha.NADA)
+			valido = false;
+
+		// RECORREMOS LA FILA ANTERIOR Y SIGUIENTE A LA POSICION PASADA
+		for (i = ficha.posicion.fila - 1; i <= ficha.posicion.fila + 1; i++) {
+			
+			//RECORREMOS LA COLUMNA ANTERIOR Y SIGUIENTE A LA POSICION PASADA
+			for (j = ficha.posicion.columna - 1; j <= ficha.posicion.columna + 1; j++) {
+
+				// NOS ECEPCIONAMOS DE NO MIRAR EN LA POSICION QUE NOSOTROS HEMOS RECIBIDO Y QUE ESTAMOS DENTRO DE LOS LIMITES DEL TABLERO
+				if (i >= 0 && i < Constantes.TAMANIO_TABLERO && j >= 0 && j < Constantes.TAMANIO_TABLERO && !(ficha.posicion.fila == i && ficha.posicion.columna == j)) {
+					
+					// COMPROBAMOS QUE NO ESTEMOS MIRANDO UNA CASILLA VACIA
+					if ((tablero[i][j].colorFicha != ficha.colorFicha)&& (tablero[i][j].colorFicha != Ficha.NADA)) {
+						
+						// HEMOS HAYADO UNA FICHA CERCA
+						fichasAlrededor.fila = i;
+						fichasAlrededor.columna = j;
+
+						// CREAMOS PATRON CON EL QUE VAMOS A COMPROBAR SI EN LA LINEA FORMADA ENTRE LA FICHA ENCONTRADA Y LA POSICION QUE QUEREMOS USAR,
+						// HAY ALGUNA FICHA DE NUESTRO COLOR
+						patron.fila = i - ficha.posicion.fila;
+						patron.columna = j - ficha.posicion.columna;
+
+						// RECORREMOS EL TABLERO CON EL PATRON QUE HEMOS CREADO 
+						while ((fichasAlrededor.fila < Constantes.TAMANIO_TABLERO && fichasAlrededor.fila >= 0) && (fichasAlrededor.columna < Constantes.TAMANIO_TABLERO && fichasAlrededor.columna >= 0) && seguir) {
+							fichasAlrededor.fila += patron.fila;
+							fichasAlrededor.columna += patron.columna;
+
+							//SI NOS ENCONTRAMOS DENTRO DEL LIMITE DEL TABLERO Y LA CASILLA ESTA VACIA NO SEGUIMOS BUSCANDO EN LA LINEA
+							if ((fichasAlrededor.fila < Constantes.TAMANIO_TABLERO && fichasAlrededor.fila >= 0)
+									&& (fichasAlrededor.columna < Constantes.TAMANIO_TABLERO && fichasAlrededor.columna >= 0)
+									&& tablero[fichasAlrededor.fila][fichasAlrededor.columna].colorFicha == Ficha.NADA)
+								seguir = false;
+
+							//SI ESTAMOS DENTRO DEL LIMITE DEL TABLERO Y ENCONTRAMOS UNA FICHA DE NUESTRO COLOR VOLTEAMOS LAS FICHAS QUE QUEDAN EN LA LINEA
+							if ((fichasAlrededor.fila < Constantes.TAMANIO_TABLERO && fichasAlrededor.fila >= 0)
+									&& (fichasAlrededor.columna < Constantes.TAMANIO_TABLERO && fichasAlrededor.columna >= 0)
+									&& tablero[fichasAlrededor.fila][fichasAlrededor.columna].colorFicha == ficha.colorFicha && cont == 0) {
+								
+								cont++;
+								seguir = false;
+								valido = true;
+								posicionarVoltear(ficha, tablero[fichasAlrededor.fila][fichasAlrededor.columna].posicion, patron);
+							}
+							seguir = true;
+						}
+					}
+				}
+			}
+		}
+		return valido;
+	}
+
+	/**
+	 * @param color
+	 * @return volteables
+	 * Metodo que almacena en un ArrayList las posiciones en las que el jugador de un color concreto
+	 * puede poner una ficha de color.
+	 * 
+	 * Para ello recorremos el tablero mirando las posiciones una a una. Por cada posicion que testeamos,
+	 * comprobamos sus 8 direcciones posibles. 
+	 * 
+	 * Cuando encontramos una ficha de color opuesto al nuestro, establecemos un patron y buscamos 
+	 * en la linea formada, si topamos con una casilla vacia paramos 
+	 * y buscamos en la siguiente direccion posible si hay, y sino aniadimos la posicion que hemos estudiado
+	 * al array volteables.
+	 */
+	public ArrayList <Casilla> comprobarVolteable(Ficha color) {
+
+		Casilla ficha = new Casilla();
+		Posicion fichasAlrededor = new Posicion();
+		Posicion patron = new Posicion();
+		boolean seguir = true;
+		int cont = 0, i, j, k, l;
+		ArrayList<Casilla> volteables = new ArrayList<Casilla>();
+
+		// RECORREMOS EL TABLERO
+		for (i = 0; i < tablero.length; i++)
+			for (j = 0; j < tablero.length; j++) {
+				
+				// GUARDAMOS LA POSICION QUE ESTAMOS TESTEANDO
+				ficha.posicion.fila = i;
+				ficha.posicion.columna = j;
+				
+				// SI LA POSICION GUARDADA ESTA VACIA
+				if (tablero[i][j].colorFicha == Ficha.NADA)
+					
+					// RECORREMOS LAS FICHAS QUE LE RODEAN, UNA FILA MENOS, UNA FILA MAS, UNA COLUMNA MENOS, UNA COLUMNA MAS
+					for (k = ficha.posicion.fila - 1; k <= ficha.posicion.fila + 1; k++) {
+						for (l = ficha.posicion.columna - 1; l <= ficha.posicion.columna + 1; l++) {
+							cont = 0;
+							
+							// SI ESTAMOS DENTRO DE LOS LIMITES DEL TABLERO Y LA FICHA NO SE ENCUENTA EN LA POSICION QUE ESTAMOS COMPROBANDO
+							if (k >= 0 && k < Constantes.TAMANIO_TABLERO && l >= 0 && l < Constantes.TAMANIO_TABLERO
+									&& !(ficha.posicion.fila == k && ficha.posicion.columna == l)) {
+								
+								// SI EL COLOR DE LA FICHA ENCONTRADA ES DIFERENTE AL DE LA NUESTRA
+								if ((tablero[k][l].colorFicha != color)
+										&& (tablero[k][l].colorFicha != Ficha.NADA)) {
+									
+									// GUARDAMOS LA POSICION DE ESTA
+									fichasAlrededor.fila = k;
+									fichasAlrededor.columna = l;
+
+									// CREAMOS UN PATRON SI NO ESTA CREADO
+									if (cont == 0) {
+										patron.fila = k - ficha.posicion.fila;
+										patron.columna = l - ficha.posicion.columna;
+									}
+									cont = 1;
+									
+									// RECORREMOS LA LINEA FORMADA CON EL PATRON
+									while ((fichasAlrededor.fila < Constantes.TAMANIO_TABLERO && fichasAlrededor.fila >= 0)
+											&& (fichasAlrededor.columna < Constantes.TAMANIO_TABLERO && fichasAlrededor.columna >= 0) && seguir) {
+										fichasAlrededor.fila += patron.fila;
+										fichasAlrededor.columna += patron.columna;
+
+										// SI ENCONTRAMOS UNA CASILLA VACIA NO SEQUIMOS BUSCANDO EN ESTA DIRECCION
+										if ((fichasAlrededor.fila < Constantes.TAMANIO_TABLERO && fichasAlrededor.fila >= 0)
+												&& (fichasAlrededor.columna < Constantes.TAMANIO_TABLERO && fichasAlrededor.columna >= 0)
+												&& tablero[fichasAlrededor.fila][fichasAlrededor.columna].colorFicha == Ficha.NADA)
+											seguir = false;
+
+										// SI ENCONTRAMOS UNA FICHA DE NUESTRO COLOR, AÑADIMOS LA POSICION QUE EMPEZAMOS A TESTEAR (i,j)
+										// A NUESTRO ARRAY LIST
+										if ((fichasAlrededor.fila < Constantes.TAMANIO_TABLERO && fichasAlrededor.fila >= 0)
+												&& (fichasAlrededor.columna < Constantes.TAMANIO_TABLERO && fichasAlrededor.columna >= 0)
+												&& tablero[fichasAlrededor.fila][fichasAlrededor.columna].colorFicha == color) {
+											volteables.add(tablero[i][j]);
+											seguir = false;
+										}
+									}
+									seguir = true;
+
+								}
+							}
+						}
+					}
+			}
+		return volteables;
+	}
+	/**
+	 * @param num
+	 * Muestra el abecedario hasta la posicion indicada**/
+	public void abecedario() {
+
+		char[] abecedario;
+		abecedario = new char[Constantes.TAMANIO_TABLERO];
+		
+		//RECORREMOS EL ABECEDARIO HASTA EL TAMANIO DEL TABLERO
+		for (int i = 0; i < Constantes.TAMANIO_TABLERO; i++) {
+			abecedario[i] = (char) ('A' + i);
+			
+			//SI ES LA ULTIMA LETRA NO ANIADIMOS ESPACIO
+			if (i == Constantes.TAMANIO_TABLERO-1)
+				System.out.print(abecedario[i]);
+			else
+				System.out.print(abecedario[i]+"  ");
+		}
+	}
+
+}

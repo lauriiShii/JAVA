@@ -1,0 +1,8 @@
+package Othello;
+
+public class Jugador {
+	
+	static Ficha color;
+	Casilla ficha = new Casilla();
+
+}

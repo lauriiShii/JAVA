@@ -1,0 +1,33 @@
+import Teclado.Teclado;
+
+public class Ejercicio06 {
+	/**
+	 * Contar el número de caracteres que hay entre la primera y última aparición de
+	 * un carácter concreto en una cadena.
+	 **/
+	public static void main(String[] args) {
+
+		// DECLARAMOS VARIABLES
+		String cad, caracter;
+		int resultado=0;
+		boolean error=false;
+
+		// PEDIMOS CADENA Y CARACTER AL USUARIO
+		cad = Teclado.cadena("Introduce una cadena: ");
+		caracter = Teclado.cadena("Introduzca el carácter a buscar: ");
+		
+		//CONTAMOS EL NÚMERO DE CARACTERES
+		//Búsco la posición de la última aparición y de la primera y las resto
+		if(cad.lastIndexOf(caracter)>cad.indexOf(cad))
+			resultado= cad.lastIndexOf(caracter)-cad.indexOf(caracter)-1;
+
+		
+		//MOSTRAMOS TOTAL DE CARACTERES
+		System.out.print("%nEl número de caracteres entre el primer y el último caracter \""+caracter+"\" es: "+resultado+" caracteres.");
+		
+		// CERRAMOS TECLADO
+		teclado.close();
+
+	}
+
+}

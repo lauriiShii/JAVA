@@ -1,0 +1,121 @@
+/**
+ * Clase que representa al jugador que controla el usuario.
+ * @author joaquin
+ *
+ */
+public class Jugador1 extends Jugador{
+	public void realizarJugada(Tablero tablero){
+		String fich, mov;
+		int i, multiple=0, exito=0, eliminadas=0, contador=0;
+		Posicion posicion1=new Posicion(0,0), posicion2=new Posicion(0,0);
+		Ficha[] fichas;
+		boolean comer=false;
+		Posicion[] posiciones;
+		FichaBlanca ficha=new FichaBlanca(posicion1, Propietario.JUGADOR);
+		ControlFichas control=new ControlFichas();
+		System.out.print("\nTURNO DEL ");
+		System.out.print(Constantes.ANSI_USUARIO1BLANCA+"USUARIO 1\n"+Constantes.ANSI_RESET);
+		do{
+			comer=false;
+			if(multiple==0){
+				tablero.mostrarse();
+				do{
+					if(contador>0){
+						System.out.println(Constantes.ANSI_USUARIO1BLANCA+"¡Ficha incorrecta!"+Constantes.ANSI_RESET);
+					}
+					System.out.print("FICHA: ");
+					fich=Lectura.cadena();
+					contador++;
+					if(fich.length()>0 && control.validarDato(fich)){
+						posicion1=new Posicion(control.modificarCoordenadas(fich)[0],control.modificarCoordenadas(fich)[1]);
+						ficha.setPosicion(posicion1);
+						fichas=control.fichasSeleccionables(tablero, Propietario.JUGADOR);
+						for(i=0;i<fichas.length;i++){
+							if(fichas[i]!=null){
+								if(fichas[i].getPosicion().equals(ficha.getPosicion())){
+									exito++;
+								}
+							}
+						}
+					}
+				}while(exito==0);
+			}
+			else{
+				System.out.println("\n¡COMBO!");
+				System.out.print("TURNO DEL ");
+				System.out.print(Constantes.ANSI_USUARIO1BLANCA+"USUARIO 1\n"+Constantes.ANSI_RESET);
+				tablero.mostrarse();
+			}
+			exito=0;
+			contador=0;
+			do{
+				for(i=0;i<tablero.getFichas().length;i++){
+					if(tablero.getFichas()[i]!=null && tablero.getFichas()[i].getPosicion().equals(ficha.getPosicion())){
+						if(tablero.getFichas()[i].isDama()) ficha.setDama(true);
+					}
+				}
+				if(contador>0){
+					System.out.println(Constantes.ANSI_USUARIO1BLANCA+"¡Movimiento incorrecto!"+Constantes.ANSI_RESET);
+				}
+				System.out.print("MOVIMIENTO: ");
+				mov=Lectura.cadena();
+				contador++;
+				if(mov.length()>0 && control.validarDato(mov)){
+					posicion2=new Posicion(control.modificarCoordenadas(mov)[0],control.modificarCoordenadas(mov)[1]);
+					if(ficha.isDama()) posiciones=ficha.posicionesPosiblesDama(tablero);
+					else posiciones=ficha.posicionesPosibles(tablero);
+					for(i=0;i<posiciones.length;i++){
+						if(posiciones[i]!=null && posiciones[i].equals(posicion2)){
+							exito++;
+						}
+					}
+				}	
+			}while(exito==0);
+			for(i=0;i<tablero.getFichas().length;i++){
+				if(tablero.getFichas()[i]!=null && tablero.getFichas()[i].equals(ficha)){
+					tablero.getFichas()[i].moverse(posicion2);
+				}
+			}
+			multiple=0;
+			eliminadas=tablero.limpiarse(ficha.getPosicion(), posicion2);
+			ficha.setPosicion(posicion2);
+			fichas=control.fichasSeleccionables(tablero, Propietario.JUGADOR);
+			for(i=0;i<fichas.length;i++){
+				if(fichas[i]!=null && fichas[i].getPosicion().equals(ficha.getPosicion())){
+					multiple++;
+				}
+			}	
+			if(!ficha.isDama()&& ficha.puedeComer(tablero)) comer=true;
+			if(ficha.isDama()&& ficha.puedeComerDama(tablero)) comer=true;
+		}while(eliminadas>0 && comer);
+	}
+	
+	public void rendirse(Tablero tablero){
+		int i=0;
+		for(i=0;i<tablero.getFichas().length;i++){
+			if(tablero.getFichas()[i]!=null && tablero.getFichas()[i].getPropietario()==Propietario.JUGADOR){
+				tablero.getFichas()[i]=null;
+			}
+		}
+		System.out.print("El ");
+		System.out.print(Constantes.ANSI_USUARIO1BLANCA+"USUARIO 1"+Constantes.ANSI_RESET);
+		System.out.println(" no puede mover ninguna ficha...");
+	}
+	
+	public void elegirOpcion(Tablero tablero){
+		int i=0, contador=0;
+		ControlFichas control=new ControlFichas();
+		Ficha fichas[]=control.fichasSeleccionables(tablero, Propietario.JUGADOR);
+		for(i=0;i<fichas.length;i++){
+			if(fichas[i]!=null){
+				contador++;
+			}
+		}
+		if(contador>0){
+			realizarJugada(tablero);
+		}
+		else{
+			rendirse(tablero);
+		}
+	}
+}
